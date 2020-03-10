@@ -1,0 +1,82 @@
+{
+  "name": "@ps-aux/cibs",
+  "version": "0.0.1",
+  "description": "",
+  "module": "lib/index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rm -rf build && babel --extensions '.ts,.js' src -d lib src",
+    "pub": "npm publish --access public",
+    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier \"**/*.{js,ts,tsx}\" --write",
+    "build-n-run": "npm run build && ",
+    "lint": "eslint '**/*.{js,ts,tsx}' --fix",
+    "update-deps": "ncu --upgrade"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "lib"
+  ],
+  "bin": {
+    "cibs": "./lib/cli/bin.js"
+  },
+  "typings": "src/types.d.ts",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^25.1.4",
+    "@types/jest-when": "^2.7.0",
+    "@types/node": "^13.9.0",
+    "@types/ramda": "^0.26.43",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "@types/node": "^13.9.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "jest-when": "^2.7.0",
+    "lint-staged": "^10.0.8",
+    "npm-check-updates": "^4.0.4",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.0",
+    "@types/hapi__joi": "^16.0.12",
+    "axios": "^0.19.2",
+    "handlebars": "^4.7.3",
+    "js-yaml": "^3.13.1",
+    "ramda": "^0.27.0",
+    "yargs": "^15.3.0"
+  }
+}

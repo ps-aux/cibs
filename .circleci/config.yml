@@ -1,0 +1,61 @@
+version: 2.1
+jobs:
+  build:
+    environment:
+    docker:
+      - image: circleci/node:13.10
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Prepare
+          command: npm install --no-save
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Typecheck
+          command: npm run typecheck
+      - run:
+          name: Test
+          command: npm run test
+      - run:
+          name: Build
+          command: npm run build
+#      - restore_cache:
+#          key: dependency-cache-e2e-{{ checksum "package.json" }}
+#      - run:
+#          name: E2e lib test
+#          working_directory: e2e
+#          command: |
+#            ./install-locally.sh
+#            npm i
+#            npm test
+#            git reset --hard
+#      - save_cache:
+#          key: dependency-cache-e2e-{{ checksum "package.json" }}
+#          paths:
+#            - ./e2e/node_modules
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+      - run:
+          name: Publish
+          command: |
+            git config user.email "ps-aux@ci.com"
+            git config user.name "ps-aux-ci"
+            export BUILD_NO=${CIRCLE_BUILD_NUM}
+            version=$(scripts/get-version.js)
+            npm version ${version} --allow-same-version
+            npm run pub --no-git-tag-version
+workflows:
+  version: 2
+  all:
+    jobs:
+      - build:
+          context: NPM
