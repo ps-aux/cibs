@@ -5,4 +5,12 @@ export type ProjectInfoProvider = {
     name: () => string
 }
 
+export type ProjectMatcher = (dirFiles: string[]) => boolean
+
 export type CreateProjectInfoProvider = (rootDir: string) => ProjectInfoProvider
+
+export type ConfProvider = {
+    property: (name: string) => string
+
+    optionalProperty: (name: string) => string | null
+}
