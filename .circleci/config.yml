@@ -3,7 +3,7 @@ jobs:
   build:
     environment:
     docker:
-      - image: circleci/node:13.10
+      - image: circleci/openjdk:13.0.2-jdk-buster-node-browsers
     steps:
       - checkout
       - restore_cache:

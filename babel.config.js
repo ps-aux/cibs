@@ -6,7 +6,6 @@ module.exports = {
                 targets: {
                     node: true
                 }
-                // modules: false, // ES6 modules only
             }
         ],
         '@babel/typescript'
