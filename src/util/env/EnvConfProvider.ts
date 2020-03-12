@@ -11,4 +11,4 @@ class EnvConfProvider implements ConfProvider {
     }
 }
 
-export const createEnvConfProvider = new EnvConfProvider()
+export const createEnvConfProvider = () => new EnvConfProvider()

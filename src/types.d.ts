@@ -1,4 +1,9 @@
-export type Logger = (...args: any) => void
+export type Log = (...args: any) => void
+export type Logger = {
+    info: Log
+    debug: Log
+    error: Log
+}
 
 export type ProjectInfoProvider = {
     version: () => string
@@ -7,7 +12,7 @@ export type ProjectInfoProvider = {
 
 export type ProjectMatcher = (dirFiles: string[]) => boolean
 
-export type CreateProjectInfoProvider = (rootDir: string) => ProjectInfoProvider
+export type CreateProjectInfoProvider = (dir: string) => ProjectInfoProvider
 
 export type ConfProvider = {
     property: (name: string) => string

@@ -17,9 +17,21 @@ const matchers: { type: PROJECT_TYPE; matches: ProjectMatcher }[] = [
 
 export const detectProjectType = (dir: string): PROJECT_TYPE => {
     const files = listDirFiles(dir)
+
+    const types: PROJECT_TYPE[] = []
+
     for (const m of matchers) {
-        if (m.matches(files)) return m.type
+        if (m.matches(files)) types.push(m.type)
     }
 
-    throw new Error(`Could not determine the type of project from dir ${dir}`)
+    if (types.length === 0)
+        throw new Error(
+            `Could not determine the type of project from dir ${dir}`
+        )
+    if (types.length > 1)
+        throw new Error(
+            `Detected multiples types of projects in dir ${dir}: ${types}`
+        )
+
+    return types[0]
 }

@@ -1,5 +1,7 @@
 import { findFileRecursivelyUpwards } from 'src/util/file-search/findFileRecursivelyUpwards'
 import { shellCmd } from 'src/util/shell/shellCmd'
+import { isGradleProject } from 'src/info/gradle/isGradleProject'
+import { listDirFiles } from 'src/util/fs/listDirFiles'
 
 const findGradleBin = (dir: string) => {
     const bin = findFileRecursivelyUpwards(dir, 'gradlew')!!
@@ -14,6 +16,8 @@ class GradleClient {
     private readonly dir: string
 
     constructor(dir: string) {
+        if (!isGradleProject(listDirFiles(dir)))
+            throw new Error(`${dir} does not appear to be a Gradle project dir`)
         this.dir = dir
         this.bin = findGradleBin(dir)
     }
@@ -35,12 +39,12 @@ class GradleClient {
         return res.split(':')[1].trim()
     }
 
-    private runCmd = (args: string) => {
+    private runCmd = (args: string): string => {
         const cmd = `${this.bin} ${args}`
         return shellCmd(cmd, {
             returnStdout: true,
             cwd: this.dir
-        }).toString()
+        }) as string
     }
 }
 
