@@ -1,6 +1,6 @@
 import { shellCmd } from 'src/util/shell/shellCmd'
 import { Logger } from 'src'
-import { containsFile, ensureContainsFile } from 'src/util/fs/containsFile'
+import { ensureContainsFile } from 'src/util/fs/containsFile'
 
 export class DockerImageClient {
     private readonly imageName: string
