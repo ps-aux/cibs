@@ -14,7 +14,7 @@ export const buildAndPushDockerImage = (
     const version = env.property('VERSION')
 
     const registryName = env.property('DOCKER_REGISTRY_NAME')
-    const apiUrl = env.property('DOCKER_REGISTRY_API_RUL')
+    const apiUrl = env.property('DOCKER_REGISTRY_API_URL')
 
     const username = env.property('DOCKER_REGISTRY_LOGIN_USERNAME')
     const password = env.property('DOCKER_REGISTRY_LOGIN_PASSWORD')
