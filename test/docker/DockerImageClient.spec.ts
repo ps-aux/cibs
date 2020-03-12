@@ -1,7 +1,7 @@
 import { DockerImageClient } from 'src/docker/DockerImageClient'
 import { Logger } from 'src'
 
-const registryApiUrl = 'https://docker.io'
+const registryApiUrl = 'https://index.docker.io/v1/'
 const registryName = 'yijohor934'
 const username = 'yijohor934'
 const pass = 'yijohor934@mailezee.com'
