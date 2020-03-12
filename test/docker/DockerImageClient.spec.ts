@@ -1,6 +1,7 @@
 import { DockerImageClient } from 'src/docker/DockerImageClient'
 import { Logger } from 'src'
 
+const registryApiUrl = 'https://docker.io'
 const registryName = 'yijohor934'
 const username = 'yijohor934'
 const pass = 'yijohor934@mailezee.com'
@@ -12,7 +13,12 @@ describe('DockerImageClient', () => {
         debug: console.log
     } as Logger
 
-    const sut = new DockerImageClient(registryName, imageName, log)
+    const sut = new DockerImageClient(
+        registryApiUrl,
+        registryName,
+        imageName,
+        log
+    )
 
     it('works', () => {
         sut.loginToRegistry(username, pass)

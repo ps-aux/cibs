@@ -1,29 +1,38 @@
 import { shellCmd } from 'src/util/shell/shellCmd'
 import { Logger } from 'src'
-import { containsFile } from 'src/util/fs/containsFile'
+import { containsFile, ensureContainsFile } from 'src/util/fs/containsFile'
 
 export class DockerImageClient {
     private readonly imageName: string
     private readonly log: Logger
-    private readonly registry: string
+    private readonly registryName: string
+    private readonly registryApiUrl: string
 
-    constructor(registryName: string, imageName: string, log: Logger) {
-        this.registry = registryName
+    constructor(
+        registryApiUrl: string,
+        registryName: string,
+        imageName: string,
+        log: Logger
+    ) {
+        this.registryName = registryName
+        this.registryApiUrl = registryApiUrl
         this.imageName = registryName + '/' + imageName
         this.log = log
     }
 
     loginToRegistry = (username: string, password: string) => {
-        this.log.debug(`Loging into ${this.registry} as ${username}`)
+        this.log.debug(`Loging into ${this.registryApiUrl} as ${username}`)
 
-        shellCmd(`docker login --username ${username} --password-stdin`, {
-            stdin: password
-        })
+        shellCmd(
+            `docker login --username ${username} --password-stdin ${this.registryApiUrl}`,
+            {
+                stdin: password
+            }
+        )
     }
 
     build = (dir: string, version: string) => {
-        if (!containsFile(dir, 'Dockerfile'))
-            throw new Error(`Dir ${dir} does not contain Dockerfile`)
+        ensureContainsFile(dir, 'Dockerfile')
 
         const tag = this.imageName + ':' + version
         shellCmd(`docker build ${dir} -t ${tag}`)
