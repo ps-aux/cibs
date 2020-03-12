@@ -6,6 +6,7 @@ jobs:
       - image: circleci/openjdk:13.0.2-jdk-buster-node-browsers
     steps:
       - checkout
+      - setup_remote_docker
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:

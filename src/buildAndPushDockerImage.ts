@@ -8,8 +8,7 @@ export const buildAndPushDockerImage = (
     ctx: Context
 ) => {
     const log = ctx.log()
-
-    log.debug('Going FOO', dockerDir, projectDir)
+    log.debug('Building Docker image', dockerDir, projectDir)
 
     const env = ctx.env()
     const version = env.property('VERSION')
