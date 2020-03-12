@@ -12,14 +12,22 @@ export const buildAndPushDockerImage = (
     log.debug('Going FOO', dockerDir, projectDir)
 
     const env = ctx.env()
-    const registryName = env.property('DOCKER_REGISTRY_NAME')
     const version = env.property('VERSION')
+
+    const registryName = env.property('DOCKER_REGISTRY_NAME')
+    const apiUrl = env.property('DOCKER_REGISTRY_API_RUL')
+
     const username = env.property('DOCKER_REGISTRY_LOGIN_USERNAME')
     const password = env.property('DOCKER_REGISTRY_LOGIN_PASSWORD')
 
     const projInfo = getProjectInfoProvider(null, projectDir)
 
-    const docker = new DockerImageClient(registryName, projInfo.name(), log)
+    const docker = new DockerImageClient(
+        apiUrl,
+        registryName,
+        projInfo.name(),
+        log
+    )
 
     docker.loginToRegistry(username, password)
     docker.build(dockerDir, version)
