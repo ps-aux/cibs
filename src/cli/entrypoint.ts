@@ -3,6 +3,7 @@ import versionCmd from 'src/cli/commands/project'
 import dockerCmd from 'src/cli/commands/docker'
 import { Context } from 'src/ctx/Context'
 import { dirOption, projectTypeOption } from 'src/cli/options'
+import waitCmd from 'src/cli/commands/wait'
 
 const entrypoint = (ctx: Context) => {
     try {
@@ -13,6 +14,7 @@ const entrypoint = (ctx: Context) => {
             .usage('$0 <cmd> [args]')
             .command(versionCmd(ctx))
             .command(dockerCmd(ctx))
+            .command(waitCmd(ctx))
             .alias('h', 'help')
             .help()
             // https://github.com/yargs/yargs/issues/895#issuecomment-392893305
