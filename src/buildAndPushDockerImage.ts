@@ -5,6 +5,7 @@ import { DockerImageClient } from 'src/docker/DockerImageClient'
 export const buildAndPushDockerImage = (
     dockerDir: string,
     projectDir: string,
+    projectType: string | null,
     ctx: Context
 ) => {
     const log = ctx.log()
@@ -19,7 +20,7 @@ export const buildAndPushDockerImage = (
     const username = env.property('DOCKER_REGISTRY_LOGIN_USERNAME')
     const password = env.property('DOCKER_REGISTRY_LOGIN_PASSWORD')
 
-    const projInfo = getProjectInfoProvider(null, projectDir)
+    const projInfo = getProjectInfoProvider(projectType, projectDir)
 
     const docker = new DockerImageClient(
         apiUrl,
