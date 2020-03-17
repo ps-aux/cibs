@@ -1,10 +1,11 @@
 import { CreateProjectInfoProvider } from 'src'
+import { createNpmClient } from 'src/info/npm/NpmClient'
 
 export const createNpmInfoProvider: CreateProjectInfoProvider = dir => {
-    const infoProvider = createNpmInfoProvider(dir)
+    const infoProvider = createNpmClient(dir)
 
     return {
-        version: () => infoProvider.version(),
-        name: () => infoProvider.name()
+        version: () => infoProvider.getVersion(),
+        name: () => infoProvider.getName()
     }
 }
