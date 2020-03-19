@@ -1,10 +1,11 @@
-import { createGradleClient } from 'src/info/gradle/GradleClient'
+import { GradleClient } from 'src/info/gradle/GradleClient'
 import Path from 'path'
+import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 
 describe('GradleClient', () => {
     const dir = Path.resolve(__dirname, 'proj1', 'submodule')
 
-    const sut = createGradleClient(dir)
+    const sut = new GradleClient(dir, new LocalShellCmdExecutor())
 
     it('getVersion', () => {
         const res = sut.getVersion()

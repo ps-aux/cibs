@@ -1,8 +1,11 @@
 import { CreateProjectInfoProvider } from 'src'
-import { createGradleClient } from 'src/info/gradle/GradleClient'
+import { GradleClient } from 'src/info/gradle/GradleClient'
 
-export const createGradleInfoProvider: CreateProjectInfoProvider = dir => {
-    const gradle = createGradleClient(dir)
+export const createGradleInfoProvider: CreateProjectInfoProvider = (
+    dir,
+    ctx
+) => {
+    const gradle = new GradleClient(dir, ctx.shell())
     return {
         version: () => gradle.getVersion(),
         name: () => gradle.getName()

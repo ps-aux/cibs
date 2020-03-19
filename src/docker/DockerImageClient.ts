@@ -1,33 +1,34 @@
-import { shellCmd } from 'src/util/shell/shellCmd'
-import { Logger } from 'src'
+import { Log } from 'src'
 import { ensureContainsFile } from 'src/util/fs/containsFile'
+import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 
 export class DockerImageClient {
     private readonly imageName: string
-    private readonly log: Logger
+    private readonly log: Log
     private readonly registryName: string
     private readonly registryApiUrl: string
+    private readonly sh: LocalShellCmdExecutor
 
     constructor(
         registryApiUrl: string,
         registryName: string,
         imageName: string,
-        log: Logger
+        shell: LocalShellCmdExecutor,
+        log: Log
     ) {
         this.registryName = registryName
         this.registryApiUrl = registryApiUrl
         this.imageName = registryName + '/' + imageName
         this.log = log
+        this.sh = shell
     }
 
     loginToRegistry = (username: string, password: string) => {
         this.log.debug(`Loging into ${this.registryApiUrl} as ${username}`)
 
-        shellCmd(
+        this.sh.execWithStdIn(
             `docker login --username ${username} --password-stdin ${this.registryApiUrl}`,
-            {
-                stdin: password
-            }
+            password
         )
     }
 
@@ -35,15 +36,15 @@ export class DockerImageClient {
         ensureContainsFile(dir, 'Dockerfile')
 
         const tag = this.imageName + ':' + version
-        shellCmd(`docker build ${dir} -t ${tag}`)
-        shellCmd(`docker tag ${tag} ${this.imageName}:latest`)
+        this.cmd(`build ${dir} -t ${tag}`)
+        this.cmd(`tag ${tag} ${this.imageName}:latest`)
     }
 
     push = () => {
-        shellCmd(`docker push ${this.imageName}`)
+        this.cmd(`push ${this.imageName}`)
     }
 
-    private runCmd = (args: string) => {
-        shellCmd(`docker ${args}`)
+    private cmd = (args: string) => {
+        this.sh.exec(`docker ${args}`)
     }
 }

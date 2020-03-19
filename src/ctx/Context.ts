@@ -1,30 +1,32 @@
-import { ConfProvider, Log, Logger } from 'src'
+import { ConfProvider, Log } from 'src'
 import { createEnvConfProvider } from 'src/util/env/EnvConfProvider'
+import { Git } from 'src/util/git/Git'
+import { ConsoleLogger } from 'src/log/ConsoleLogger'
+import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 
 export type Context = {
-    log: () => Logger
+    log: () => Log
     env: () => ConfProvider
+    git: () => Git
+    shell: () => LocalShellCmdExecutor
 }
 
-const doLog = console.log as Log
-
-const cheapLogger = () => ({
-    info: doLog,
-    trace: doLog,
-    error: doLog,
-    debug: doLog
-})
-
 class ContextImpl implements Context {
-    private readonly _log: Logger
+    private readonly _log: Log
+    private readonly sh: LocalShellCmdExecutor
 
     constructor() {
-        this._log = cheapLogger()
+        this._log = new ConsoleLogger()
+        this.sh = new LocalShellCmdExecutor(this._log)
     }
+
+    shell = () => this.sh
 
     log = () => this._log
 
     env = () => createEnvConfProvider()
+
+    git = () => new Git(this.sh)
 }
 
 export const createContext = (): Context => {

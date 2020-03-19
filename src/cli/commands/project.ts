@@ -4,17 +4,21 @@ import { getProjectInfoProvider } from 'src/info/getProjectInfoProvider'
 import { getBuildVersion } from 'src/build/getBuildVersion'
 import { dirOption, projectTypeOption } from 'src/cli/options'
 
-export const getProjectVersionFromArgs = (args: Arguments<any>) => {
+export const getProjectVersionFromArgs = (
+    args: Arguments<any>,
+    ctx: Context
+) => {
     const version = getProjectInfoProvider(
         projectTypeOption.getVal(args),
-        dirOption.getVal(args)
+        dirOption.getVal(args),
+        ctx
     ).version()
 
     return version
 }
 
 export const getBuildVersionFromArgs = (args: Arguments<any>, ctx: Context) => {
-    const projectVersion = getProjectVersionFromArgs(args)
+    const projectVersion = getProjectVersionFromArgs(args, ctx)
     return getBuildVersion(projectVersion, ctx.env())
 }
 
@@ -28,7 +32,7 @@ const vpsCmd = (ctx: Context): CommandModule => ({
                 'Get project version (user defined part',
                 y => y,
                 args => {
-                    console.log(getProjectVersionFromArgs(args))
+                    console.log(getProjectVersionFromArgs(args, ctx))
                 }
             )
             .command(

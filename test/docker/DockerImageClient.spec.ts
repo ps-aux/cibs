@@ -1,5 +1,7 @@
 import { DockerImageClient } from 'src/docker/DockerImageClient'
-import { Logger } from 'src'
+import { Log } from 'src'
+import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
+import { ConsoleLogger } from 'src/log/ConsoleLogger'
 
 const registryApiUrl = 'https://index.docker.io/v1/'
 const registryName = 'yijohor934'
@@ -9,14 +11,13 @@ const pass = 'yijohor934@mailezee.com'
 describe('DockerImageClient', () => {
     const imageName = 'cibs-test-image'
 
-    const log = {
-        debug: console.log
-    } as Logger
+    const log = new ConsoleLogger()
 
     const sut = new DockerImageClient(
         registryApiUrl,
         registryName,
         imageName,
+        new LocalShellCmdExecutor(),
         log
     )
 

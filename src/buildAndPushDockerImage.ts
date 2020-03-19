@@ -20,12 +20,13 @@ export const buildAndPushDockerImage = (
     const username = env.property('DOCKER_REGISTRY_LOGIN_USERNAME')
     const password = env.property('DOCKER_REGISTRY_LOGIN_PASSWORD')
 
-    const projInfo = getProjectInfoProvider(projectType, projectDir)
+    const projInfo = getProjectInfoProvider(projectType, projectDir, ctx)
 
     const docker = new DockerImageClient(
         apiUrl,
         registryName,
         projInfo.name(),
+        ctx.shell(),
         log
     )
 
