@@ -32,11 +32,19 @@ export class DockerImageClient {
         )
     }
 
-    build = (dir: string, version: string) => {
+    build = (
+        dir: string,
+        version: string,
+        buildArgs: { [key: string]: string } = {}
+    ) => {
         ensureContainsFile(dir, 'Dockerfile')
 
+        const buildArgsStr = Object.entries(buildArgs)
+            .map(([key, val]) => `--build-arg ${key}='${val}'`)
+            .join(' ')
+
         const tag = this.imageName + ':' + version
-        this.cmd(`build ${dir} -t ${tag}`)
+        this.cmd(`build ${dir} -t ${tag} ${buildArgsStr}`)
         this.cmd(`tag ${tag} ${this.imageName}:latest`)
     }
 

@@ -11,7 +11,13 @@ const dockerCmd = (ctx: Context): CommandModule => ({
         y
             .option({
                 'docker-dir': {
-                    type: 'string'
+                    type: 'string',
+                    description: 'Dir with Dockerfile'
+                },
+                'build-info-build-arg': {
+                    type: 'boolean',
+                    description:
+                        'Set to inject build info JSON as a build arg with name BUILD_INFO'
                 }
             })
             .command(
@@ -20,10 +26,19 @@ const dockerCmd = (ctx: Context): CommandModule => ({
                 y => y,
                 args => {
                     const dockerDir = normalizeDir(args.dockerDir as string)
+                    const buildInfoBuildArg = !!args.buildInfoBuildArg || false
                     const projInfoCmd = extractGetProjectInfoCmd(args)
-                    buildAndPushDockerImage(projInfoCmd, dockerDir, ctx)
+                    buildAndPushDockerImage(
+                        projInfoCmd,
+                        {
+                            dockerDir,
+                            buildInfoBuildArg
+                        },
+                        ctx
+                    )
                 }
-            ),
+            )
+            .demandCommand(),
     handler: args => {
         throw new Error('Assertion error')
     }
