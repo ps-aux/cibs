@@ -18,7 +18,7 @@ export const shellCmd = (
         ]
     })
 
-    if (returnStdout) return res.toString()
+    if (returnStdout) return res.toString().trim()
 
     return null
 }

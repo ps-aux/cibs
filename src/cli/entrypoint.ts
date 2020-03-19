@@ -1,5 +1,5 @@
 import Yargs from 'yargs'
-import versionCmd from 'src/cli/commands/project'
+import versionCmd from 'src/cli/commands/buildInfo'
 import dockerCmd from 'src/cli/commands/docker'
 import { Context } from 'src/ctx/Context'
 import { dirOption, projectTypeOption } from 'src/cli/options'

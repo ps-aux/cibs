@@ -12,16 +12,38 @@ const projectInfoProviders: {
     [NPM]: createNpmInfoProvider
 }
 
-export const getProjectInfoProvider = (
-    projectType: string | null,
-    dir: string,
+const getProjectInfoProvider = (
+    cmd: GetProjectInfoCmd,
     ctx: Context
 ): ProjectInfoProvider => {
-    if (!projectType) projectType = detectProjectType(dir)
+    const { dir } = cmd
+    const projectType = cmd.projectType || detectProjectType(cmd.dir)
 
     const res = projectInfoProviders[projectType]
 
     if (!res) throw new Error(`Unknown project type: ${projectType}`)
 
     return res(dir, ctx)
+}
+
+export type ProjectInfo = {
+    name: string
+    version: string
+}
+
+export type GetProjectInfoCmd = {
+    projectType?: string
+    dir: string
+}
+
+export const getProjectInfo = (
+    cmd: GetProjectInfoCmd,
+    ctx: Context
+): ProjectInfo => {
+    const prov = getProjectInfoProvider(cmd, ctx)
+
+    return {
+        name: prov.name(),
+        version: prov.version()
+    }
 }

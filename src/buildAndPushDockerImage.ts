@@ -1,18 +1,21 @@
 import { Context } from 'src/ctx/Context'
-import { getProjectInfoProvider } from 'src/info/getProjectInfoProvider'
+import { GetProjectInfoCmd } from 'src/info/getProjectInfo'
 import { DockerImageClient } from 'src/docker/DockerImageClient'
+import { getBuildInfo } from 'src/info/getBuildInfo'
 
 export const buildAndPushDockerImage = (
+    projInfoCmd: GetProjectInfoCmd,
     dockerDir: string,
-    projectDir: string,
-    projectType: string | null,
     ctx: Context
 ) => {
     const log = ctx.log()
-    log.debug('Building Docker image', dockerDir, projectDir)
+    const info = getBuildInfo(projInfoCmd, ctx)
+
+    log.debug('Building Docker image', dockerDir)
 
     const env = ctx.env()
-    const version = env.property('VERSION')
+    const version = info.version
+    const name = info.name
 
     const registryName = env.property('DOCKER_REGISTRY_NAME')
     const apiUrl = env.property('DOCKER_REGISTRY_API_URL')
@@ -20,12 +23,10 @@ export const buildAndPushDockerImage = (
     const username = env.property('DOCKER_REGISTRY_LOGIN_USERNAME')
     const password = env.property('DOCKER_REGISTRY_LOGIN_PASSWORD')
 
-    const projInfo = getProjectInfoProvider(projectType, projectDir, ctx)
-
     const docker = new DockerImageClient(
         apiUrl,
         registryName,
-        projInfo.name(),
+        name,
         ctx.shell(),
         log
     )

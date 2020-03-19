@@ -2,7 +2,7 @@ import { CommandModule } from 'yargs'
 import { Context } from 'src/ctx/Context'
 import { buildAndPushDockerImage } from 'src/buildAndPushDockerImage'
 import { normalizeDir } from 'src/cli/normalizeDir'
-import { dirOption, projectTypeOption } from 'src/cli/options'
+import { extractGetProjectInfoCmd } from 'src/cli/options'
 
 const dockerCmd = (ctx: Context): CommandModule => ({
     command: 'docker',
@@ -20,14 +20,8 @@ const dockerCmd = (ctx: Context): CommandModule => ({
                 y => y,
                 args => {
                     const dockerDir = normalizeDir(args.dockerDir as string)
-                    const projectDir = dirOption.getVal(args)
-                    const projectType = projectTypeOption.getVal(args)
-                    buildAndPushDockerImage(
-                        dockerDir,
-                        projectDir,
-                        projectType,
-                        ctx
-                    )
+                    const projInfoCmd = extractGetProjectInfoCmd(args)
+                    buildAndPushDockerImage(projInfoCmd, dockerDir, ctx)
                 }
             ),
     handler: args => {

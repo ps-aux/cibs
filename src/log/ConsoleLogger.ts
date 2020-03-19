@@ -1,9 +1,19 @@
 import { Log } from 'src'
 
 export class ConsoleLogger implements Log {
-    debug = console.log
+    private enabled = true
 
-    info = console.log
+    debug = (...args: any) => {
+        if (this.enabled) console.log(...args)
+    }
+
+    info = (...args: any) => {
+        if (this.enabled) console.log(...args)
+    }
 
     error = console.error
+
+    setEnabled = (enabled: boolean) => {
+        this.enabled = enabled
+    }
 }

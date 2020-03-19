@@ -9,10 +9,12 @@ export type Context = {
     env: () => ConfProvider
     git: () => Git
     shell: () => LocalShellCmdExecutor
+    now: () => Date
+    disableConsoleLogging: () => void
 }
 
 class ContextImpl implements Context {
-    private readonly _log: Log
+    private readonly _log: ConsoleLogger
     private readonly sh: LocalShellCmdExecutor
 
     constructor() {
@@ -24,9 +26,15 @@ class ContextImpl implements Context {
 
     log = () => this._log
 
+    disableConsoleLogging = () => {
+        this._log.setEnabled(false)
+    }
+
     env = () => createEnvConfProvider()
 
     git = () => new Git(this.sh)
+
+    now = () => new Date()
 }
 
 export const createContext = (): Context => {
