@@ -1,4 +1,4 @@
-import { Log, LogMsg } from 'src/types'
+import { Log } from 'src/types'
 
 class MinimalLogger implements Log {
     debug = () => {

@@ -1,5 +1,4 @@
 import { DockerImageClient } from 'src/docker/DockerImageClient'
-import { Log } from 'src'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
 
