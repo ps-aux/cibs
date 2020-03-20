@@ -1,7 +1,6 @@
 import { CommandModule } from 'yargs'
 import { Context } from 'src/ctx/Context'
 import { buildAndPushDockerImage } from 'src/docker/buildAndPushDockerImage'
-import { normalizeDir } from 'src/cli/normalizeDir'
 import { extractGetProjectInfoCmd } from 'src/cli/options'
 
 const dockerCmd = (ctx: Context): CommandModule => ({
