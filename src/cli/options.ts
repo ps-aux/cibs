@@ -1,6 +1,7 @@
 import { Arguments, Options } from 'yargs'
 import { normalizeDir } from 'src/cli/normalizeDir'
 import { GetProjectInfoCmd } from 'src/info/getProjectInfo'
+import { PROJECT_TYPE } from 'src/info/ProjectType'
 
 type Option<T> = {
     name: string
@@ -15,14 +16,14 @@ export const extractGetProjectInfoCmd = (
     projectType: projectTypeOption.getVal(args)
 })
 
-export const projectTypeOption: Option<string | undefined> = {
+export const projectTypeOption: Option<PROJECT_TYPE | undefined> = {
     name: 'project-type',
     def: {
         type: 'string',
         alias: 'P'
     },
     getVal: (args: Arguments) => {
-        return (args.projectType as string) || undefined
+        return (args.projectType as PROJECT_TYPE) || undefined
     }
 }
 

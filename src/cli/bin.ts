@@ -3,5 +3,6 @@
 import entrypoint from 'src/cli/entrypoint'
 import { createContext } from 'src/ctx/Context'
 
-const ctx = createContext()
+const rootDir = process.cwd()
+const ctx = createContext(rootDir)
 entrypoint(ctx)

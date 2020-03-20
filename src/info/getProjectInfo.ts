@@ -1,7 +1,7 @@
 import { CreateProjectInfoProvider, ProjectInfoProvider } from 'src'
 import { createGradleInfoProvider } from 'src/info/gradle/GradleInfoProvider'
 import { createNpmInfoProvider } from 'src/info/npm/NpmInfoProvider'
-import { GRADLE, NPM } from 'src/info/ProjectType'
+import { GRADLE, NPM, PROJECT_TYPE } from 'src/info/ProjectType'
 import { detectProjectType } from 'src/info/detectProjectType'
 import { Context } from 'src/ctx/Context'
 
@@ -12,13 +12,21 @@ const projectInfoProviders: {
     [NPM]: createNpmInfoProvider
 }
 
+const getProjectType = (cmd: GetProjectInfoCmd, ctx: Context): PROJECT_TYPE => {
+    if (cmd.projectType) return cmd.projectType
+
+    const config = ctx.config()
+    if (config) return config.projectType
+    return detectProjectType(cmd.dir)
+}
+
 const getProjectInfoProvider = (
     cmd: GetProjectInfoCmd,
     ctx: Context
 ): ProjectInfoProvider => {
     const { dir } = cmd
-    const projectType = cmd.projectType || detectProjectType(cmd.dir)
 
+    const projectType = getProjectType(cmd, ctx)
     const res = projectInfoProviders[projectType]
 
     if (!res) throw new Error(`Unknown project type: ${projectType}`)
@@ -32,7 +40,7 @@ export type ProjectInfo = {
 }
 
 export type GetProjectInfoCmd = {
-    projectType?: string
+    projectType?: PROJECT_TYPE
     dir: string
 }
 

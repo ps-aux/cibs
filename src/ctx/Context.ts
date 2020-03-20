@@ -3,6 +3,8 @@ import { createEnvConfProvider } from 'src/util/env/EnvConfProvider'
 import { Git } from 'src/util/git/Git'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
+import { Config } from 'src/config/Config'
+import { readConfig } from 'src/config/readConfig'
 
 export type Context = {
     log: () => Log
@@ -10,16 +12,19 @@ export type Context = {
     git: () => Git
     shell: () => LocalShellCmdExecutor
     now: () => Date
+    config: () => Config | null
     disableConsoleLogging: () => void
 }
 
 class ContextImpl implements Context {
     private readonly _log: ConsoleLogger
     private readonly sh: LocalShellCmdExecutor
+    private readonly _config: Config | null
 
-    constructor() {
+    constructor(rootDir: string) {
         this._log = new ConsoleLogger()
         this.sh = new LocalShellCmdExecutor(this._log)
+        this._config = readConfig(rootDir)
     }
 
     shell = () => this.sh
@@ -30,6 +35,8 @@ class ContextImpl implements Context {
         this._log.setEnabled(false)
     }
 
+    config = () => this._config
+
     env = () => createEnvConfProvider()
 
     git = () => new Git(this.sh)
@@ -37,6 +44,6 @@ class ContextImpl implements Context {
     now = () => new Date()
 }
 
-export const createContext = (): Context => {
-    return new ContextImpl()
+export const createContext = (rootDir: string): Context => {
+    return new ContextImpl(rootDir)
 }
