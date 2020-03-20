@@ -25,7 +25,7 @@ const dockerCmd = (ctx: Context): CommandModule => ({
                 'Builds and pushes Docker image',
                 y => y,
                 args => {
-                    const dockerDir = normalizeDir(args.dockerDir as string)
+                    const dockerDir = args.dockerDir as string
                     const buildInfoBuildArg = !!args.buildInfoBuildArg || false
                     const projInfoCmd = extractGetProjectInfoCmd(args)
                     buildAndPushDockerImage(
