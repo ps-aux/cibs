@@ -2,21 +2,31 @@ import { Context } from 'src/ctx/Context'
 import { GetProjectInfoCmd } from 'src/info/getProjectInfo'
 import { DockerImageClient } from 'src/docker/DockerImageClient'
 import { getBuildInfo } from 'src/info/getBuildInfo'
+import { Config } from 'src/config/Config'
+import { normalizeDir } from 'src/cli/normalizeDir'
 
 export type BuildAndPushDockerImageCmd = {
-    dockerDir: string
+    dockerDir?: string
     buildInfoBuildArg: boolean
 }
 
-export const buildAndPushDockerImage = (
-    projInfoCmd: GetProjectInfoCmd,
+const getDockerDir = (
     cmd: BuildAndPushDockerImageCmd,
+    projInfo: GetProjectInfoCmd,
+    cfg: Config | null
+) => normalizeDir(cmd.dockerDir || cfg?.dockerDir || projInfo.dir)
+
+export const buildAndPushDockerImage = (
+    cmd: BuildAndPushDockerImageCmd,
+    projInfoCmd: GetProjectInfoCmd,
     ctx: Context
 ) => {
     const log = ctx.log()
+
+    const dir = getDockerDir(cmd, projInfoCmd, ctx.config())
     const info = getBuildInfo(projInfoCmd, ctx)
 
-    log.debug('Building Docker image', cmd.dockerDir)
+    log.debug('Building Docker image from dir', dir)
 
     const env = ctx.env()
     const version = info.version
@@ -40,6 +50,6 @@ export const buildAndPushDockerImage = (
     const buildArgs: { [key: string]: string } = {}
 
     if (cmd.buildInfoBuildArg) buildArgs.BUILD_INFO = JSON.stringify(info)
-    docker.build(cmd.dockerDir, version, buildArgs)
+    docker.build(dir, version, buildArgs)
     docker.push()
 }

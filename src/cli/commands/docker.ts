@@ -29,11 +29,11 @@ const dockerCmd = (ctx: Context): CommandModule => ({
                     const buildInfoBuildArg = !!args.buildInfoBuildArg || false
                     const projInfoCmd = extractGetProjectInfoCmd(args)
                     buildAndPushDockerImage(
-                        projInfoCmd,
                         {
                             dockerDir,
                             buildInfoBuildArg
                         },
+                        projInfoCmd,
                         ctx
                     )
                 }

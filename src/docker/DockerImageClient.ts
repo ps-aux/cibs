@@ -1,6 +1,7 @@
 import { Log } from 'src'
 import { ensureContainsFile } from 'src/util/fs/containsFile'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
+import Path from 'path'
 
 export class DockerImageClient {
     private readonly imageName: string
@@ -37,6 +38,8 @@ export class DockerImageClient {
         version: string,
         buildArgs: { [key: string]: string } = {}
     ) => {
+        if (!Path.isAbsolute(dir)) throw new Error(`Dir ${dir} is not absolute`)
+
         ensureContainsFile(dir, 'Dockerfile')
 
         const buildArgsStr = Object.entries(buildArgs)

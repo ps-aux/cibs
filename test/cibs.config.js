@@ -1,3 +1,4 @@
 module.exports = {
-    projectType: 'gradle'
+    projectType: 'gradle',
+    dockerDir: 'foo'
 }

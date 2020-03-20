@@ -4,7 +4,8 @@ import Joi from '@hapi/joi'
 
 const Schema = () =>
     Joi.object({
-        projectType: allProjectTypes
+        projectType: allProjectTypes,
+        dockerDir: Joi.string().optional()
     })
 
 export const validateConfig = (cfg: any): Config => {
