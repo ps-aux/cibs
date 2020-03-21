@@ -4,30 +4,18 @@ import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import Path from 'path'
 
 export class DockerImageClient {
-    private readonly imageName: string
-    private readonly log: Log
-    private readonly registryName: string
-    private readonly registryApiUrl: string
-    private readonly sh: LocalShellCmdExecutor
-
     constructor(
-        registryApiUrl: string,
-        registryName: string,
-        imageName: string,
-        shell: LocalShellCmdExecutor,
-        log: Log
-    ) {
-        this.registryName = registryName
-        this.registryApiUrl = registryApiUrl
-        this.imageName = registryName + '/' + imageName
-        this.log = log
-        this.sh = shell
-    }
+        private readonly registryApiUrl: string,
+        private readonly registryName: string,
+        private readonly imageName: string,
+        private readonly shell: LocalShellCmdExecutor,
+        private readonly log: Log
+    ) {}
 
     loginToRegistry = (username: string, password: string) => {
         this.log.debug(`Loging into ${this.registryApiUrl} as ${username}`)
 
-        this.sh.execWithStdIn(
+        this.shell.execWithStdIn(
             `docker login --username ${username} --password-stdin ${this.registryApiUrl}`,
             password
         )
@@ -56,6 +44,6 @@ export class DockerImageClient {
     }
 
     private cmd = (args: string) => {
-        this.sh.exec(`docker ${args}`)
+        this.shell.exec(`docker ${args}`)
     }
 }

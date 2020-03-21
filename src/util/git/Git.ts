@@ -1,11 +1,7 @@
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 
 export class Git {
-    private readonly sh: LocalShellCmdExecutor
-
-    constructor(sh: LocalShellCmdExecutor) {
-        this.sh = sh
-    }
+    constructor(private readonly sh: LocalShellCmdExecutor) {}
 
     branch = (): string => this.exec('rev-parse --abbrev-ref HEAD')
 

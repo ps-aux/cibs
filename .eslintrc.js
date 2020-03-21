@@ -26,7 +26,8 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': [2, { args: 'none' }],
         '@typescript-eslint/indent': 'off',
         '@typescript-eslint/ban-ts-ignore': 'off',
-        '@typescript-eslint/explicit-member-accessibility': 'off'
+        '@typescript-eslint/explicit-member-accessibility': 'off',
+        'no-useless-constructor': 'off' // Bcs of Typescript
     },
     overrides: [
         {
