@@ -13,7 +13,7 @@ export class DockerImageClient {
     ) {}
 
     loginToRegistry = (username: string, password: string) => {
-        this.log.debug(`Loging into ${this.registryApiUrl} as ${username}`)
+        this.log.debug(`Logging into ${this.registryApiUrl} as ${username}`)
 
         this.shell.execWithStdIn(
             `docker login --username ${username} --password-stdin ${this.registryApiUrl}`,

@@ -7,6 +7,12 @@ const waitCmd = (ctx: Context): CommandModule => ({
     describe: 'Wait for a condition',
     builder: (y: Argv) =>
         y
+            .option({
+                'timeout': {
+                    type: 'number',
+                    description: 'Timeout in ms'
+                }
+            })
             .command(
                 'http <url>', // We cannot use version as it is always boolean (probably conflicts with --version functionality)
                 'Wait for an HTTP endpoint. Must return 2xx response',
