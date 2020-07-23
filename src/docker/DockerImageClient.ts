@@ -4,13 +4,17 @@ import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import Path from 'path'
 
 export class DockerImageClient {
+    private readonly fullName: string
+
     constructor(
         private readonly registryApiUrl: string,
-        private readonly registryName: string,
-        private readonly imageName: string,
+        registryName: string,
+        imageName: string,
         private readonly shell: LocalShellCmdExecutor,
         private readonly log: Log
-    ) {}
+    ) {
+        this.fullName = registryName + '/' + imageName
+    }
 
     loginToRegistry = (username: string, password: string) => {
         this.log.debug(`Logging into ${this.registryApiUrl} as ${username}`)
@@ -34,13 +38,13 @@ export class DockerImageClient {
             .map(([key, val]) => `--build-arg ${key}='${val}'`)
             .join(' ')
 
-        const tag = this.imageName + ':' + version
+        const tag = this.fullName + ':' + version
         this.cmd(`build ${dir} -t ${tag} ${buildArgsStr}`)
-        this.cmd(`tag ${tag} ${this.imageName}:latest`)
+        this.cmd(`tag ${tag} ${this.fullName}:latest`)
     }
 
     push = () => {
-        this.cmd(`push ${this.imageName}`)
+        this.cmd(`push ${this.fullName}`)
     }
 
     private cmd = (args: string) => {
