@@ -56,7 +56,7 @@ jobs:
             git config user.name "ps-aux-ci"
             export BUILD_NO=${CIRCLE_BUILD_NUM}
             version=$(scripts/get-version.js)
-            npm version ${version} --allow-same-version
+            npm version ${version} --allow-same-version --no-git-tag-version
             npm run pub --no-git-tag-version
 workflows:
   version: 2
