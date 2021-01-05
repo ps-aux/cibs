@@ -72,7 +72,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@types/hapi__joi": "^16.0.12",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "handlebars": "^4.7.3",
     "js-yaml": "^3.13.1",
     "ramda": "^0.27.0",
