@@ -23,19 +23,19 @@ const readPackageJson = (path: string): PackageJson => {
 }
 
 export class NpmClient {
-    private readonly packageJson: PackageJson
-
-    constructor(dir: string) {
+    private packageJson = (dir: string): PackageJson => {
         const packageJsonPath = findFileInDir(dir, 'package.json')
         if (!packageJsonPath)
             throw new Error(
                 `${dir} is not a npm project dir. Does not contain package.json`
             )
 
-        this.packageJson = readPackageJson(packageJsonPath)
+        const res = readPackageJson(packageJsonPath)
+
+        return res
     }
 
-    getVersion = () => this.packageJson.version
+    getVersion = (dir: string): string => this.packageJson(dir).version
 
-    getName = () => this.packageJson.name
+    getName = (dir: string): string => this.packageJson(dir).name
 }

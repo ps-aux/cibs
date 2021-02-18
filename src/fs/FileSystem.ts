@@ -4,7 +4,8 @@ import fs from 'fs'
 
 export class FileSystem {
     listDirFiles = (dir: string): string[] => {
-        if (!Path.isAbsolute(dir)) throw new Error('Dir path must be absolute')
+        if (!Path.isAbsolute(dir))
+            throw new Error(`Dir path must be absolute but is '${dir}'`)
 
         ensureValidDir(dir)
 

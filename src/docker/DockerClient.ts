@@ -3,33 +3,34 @@ import { ensureContainsFile } from 'src/util/fs/containsFile'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import Path from 'path'
 
-export class DockerImageClient {
-    private readonly fullName: string
-
+export class DockerClient {
     constructor(
-        private readonly registryApiUrl: string,
-        registryName: string,
-        imageName: string,
         private readonly shell: LocalShellCmdExecutor,
         private readonly log: Log
-    ) {
-        this.fullName = registryName + '/' + imageName
-    }
+    ) {}
 
-    loginToRegistry = (username: string, password: string) => {
-        this.log.debug(`Logging into ${this.registryApiUrl} as ${username}`)
+    loginToRegistry = (
+        apiUrl: string,
+        username: string,
+        password: string
+    ): void => {
+        this.log.debug(`Logging into ${apiUrl} as ${username}`)
 
         this.shell.execWithStdIn(
-            `docker login --username ${username} --password-stdin ${this.registryApiUrl}`,
+            `docker login --username ${username} --password-stdin ${apiUrl}`,
             password
         )
     }
 
+    composeName = (registryName: string, imageName: string): string =>
+        registryName + '/' + imageName
+
     build = (
         dir: string,
+        name: string,
         version: string,
         buildArgs: { [key: string]: string } = {}
-    ) => {
+    ): void => {
         if (!Path.isAbsolute(dir)) throw new Error(`Dir ${dir} is not absolute`)
 
         ensureContainsFile(dir, 'Dockerfile')
@@ -38,13 +39,13 @@ export class DockerImageClient {
             .map(([key, val]) => `--build-arg ${key}='${val}'`)
             .join(' ')
 
-        const tag = this.fullName + ':' + version
+        const tag = name + ':' + version
         this.cmd(`build ${dir} -t ${tag} ${buildArgsStr}`)
-        this.cmd(`tag ${tag} ${this.fullName}:latest`)
+        this.cmd(`tag ${tag} ${name}:latest`)
     }
 
-    push = () => {
-        this.cmd(`push ${this.fullName}`)
+    push = (name: string): void => {
+        this.cmd(`push ${name}`)
     }
 
     private cmd = (args: string) => {

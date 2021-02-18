@@ -1,4 +1,4 @@
-import { BuildInfo } from 'src/artefact-info/build/BuildInfo'
+import { BuildInfo } from 'src/info/build/BuildInfo'
 import { ConfProvider } from 'src'
 import { Git } from 'src/util/git/Git'
 import { Clock } from 'src/ctx/Clock'

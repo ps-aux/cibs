@@ -1,4 +1,3 @@
-import { minimalLogger } from 'src/log/MinimalLogger'
 import { Log } from 'src/types'
 import { shellCmd } from 'src/util/shell/shellCmd'
 
@@ -7,11 +6,7 @@ export type ExecShellOps = {
 }
 
 export class LocalShellCmdExecutor {
-    private log: Log
-
-    constructor(log?: Log) {
-        this.log = log || minimalLogger()
-    }
+    constructor(private log: Log) {}
 
     exec = (cmd: string) => {
         this.log.debug(cmd)

@@ -1,8 +1,8 @@
 import { Context } from 'src/ctx/Context'
-import { GetProjectInfoCmd } from 'src/artefact-info/getProjectInfo'
-import { DockerImageClient } from 'src/docker/DockerImageClient'
+import { DockerClient } from 'src/docker/DockerClient'
 import { Config } from 'src/config/Config'
 import { normalizeDir } from 'src/cli/normalizeDir'
+import { ArtifactInfoProvider } from 'src/info/ArtifactInfoProvider'
 
 export type BuildAndPushDockerImageCmd = {
     dockerDir?: string
@@ -11,19 +11,19 @@ export type BuildAndPushDockerImageCmd = {
 
 const getDockerDir = (
     cmd: BuildAndPushDockerImageCmd,
-    projInfo: GetProjectInfoCmd,
+    dir: string,
     cfg: Config | null
-) => normalizeDir(cmd.dockerDir || cfg?.dockerDir || projInfo.dir)
+) => normalizeDir(cmd.dockerDir || cfg?.dockerDir || dir)
 
 export const buildAndPushDockerImage = (
+    artefactInfoProvider: ArtifactInfoProvider,
     cmd: BuildAndPushDockerImageCmd,
-    projInfoCmd: GetProjectInfoCmd,
     ctx: Context
 ) => {
     const log = ctx.log()
 
     const dir = getDockerDir(cmd, projInfoCmd, ctx.config())
-    const info = getBuildInfo(projInfoCmd, ctx)
+    const info = artefactInfoProvider.provide()
 
     log.debug('Building Docker image from dir', dir)
 
@@ -37,13 +37,7 @@ export const buildAndPushDockerImage = (
     const username = env.property('DOCKER_REGISTRY_LOGIN_USERNAME')
     const password = env.property('DOCKER_REGISTRY_LOGIN_PASSWORD')
 
-    const docker = new DockerImageClient(
-        apiUrl,
-        registryName,
-        name,
-        ctx.shell(),
-        log
-    )
+    const docker = new DockerClient(apiUrl, ctx.shell(), log)
 
     docker.loginToRegistry(username, password)
     const buildArgs: { [key: string]: string } = {}

@@ -1,0 +1,10 @@
+buildscript {
+    ext {
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+}

@@ -1,4 +1,4 @@
-import { allProjectTypes } from 'src/artefact-info/ProjectType'
+import { allProjectTypes } from 'src/info/ProjectType'
 import { Config } from 'src/config/Config'
 import Joi from '@hapi/joi'
 

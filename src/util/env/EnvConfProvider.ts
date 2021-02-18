@@ -1,9 +1,10 @@
 import { ConfProvider } from 'src'
 
-class EnvConfProvider implements ConfProvider {
-    optionalProperty = (name: string) => process.env[name] as string | null
+export class EnvConfProvider implements ConfProvider {
+    optionalProperty = (name: string): string | null =>
+        process.env[name] as string | null
 
-    property = (name: string) => {
+    property = (name: string): string => {
         const val = this.optionalProperty(name)
         if (!val) throw new Error(`Missing env var '${name}'`)
 

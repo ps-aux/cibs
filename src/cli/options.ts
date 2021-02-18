@@ -1,7 +1,7 @@
 import { Arguments, Options } from 'yargs'
 import { normalizeDir } from 'src/cli/normalizeDir'
-import { GetProjectInfoCmd } from 'src/artefact-info/getProjectInfo'
-import { PROJECT_TYPE } from 'src/artefact-info/ProjectType'
+import { GetProjectInfoCmd } from 'src/info/getProjectInfo'
+import { PROJECT_TYPE } from 'src/info/ProjectType'
 
 type Option<T> = {
     name: string
