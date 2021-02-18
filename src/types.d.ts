@@ -1,12 +1,6 @@
 import { Context } from 'src/ctx/Context'
 
-export type LogMsg = (...args: any) => void
-
-export type Log = {
-    info: LogMsg
-    debug: LogMsg
-    error: LogMsg
-}
+export { Log, LogMsg } from './log/types'
 
 export type ProjectInfoProvider = {
     version: () => string

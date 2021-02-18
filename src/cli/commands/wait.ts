@@ -8,7 +8,7 @@ const waitCmd = (ctx: Context): CommandModule => ({
     builder: (y: Argv) =>
         y
             .option({
-                'timeout': {
+                timeout: {
                     type: 'number',
                     description: 'Timeout in ms'
                 }

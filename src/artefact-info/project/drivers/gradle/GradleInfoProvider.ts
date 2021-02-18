@@ -1,5 +1,5 @@
 import { CreateProjectInfoProvider } from 'src'
-import { GradleClient } from 'src/info/gradle/GradleClient'
+import { GradleClient } from 'src/artefact-info/project/drivers/gradle/GradleClient'
 
 export const createGradleInfoProvider: CreateProjectInfoProvider = (
     dir,

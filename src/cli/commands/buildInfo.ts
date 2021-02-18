@@ -1,7 +1,7 @@
 import { Argv, CommandModule } from 'yargs'
 import { Context } from 'src/ctx/Context'
 import { extractGetProjectInfoCmd } from 'src/cli/options'
-import { BuildInfo, getBuildInfo } from 'src/info/getBuildInfo'
+import { BuildInfo, getBuildInfo } from 'src/artefact-info/build/getBuildInfo'
 
 const extractKey = (info: BuildInfo, key: string) => {
     // @ts-ignore

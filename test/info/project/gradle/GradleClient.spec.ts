@@ -1,4 +1,4 @@
-import { GradleClient } from 'src/info/gradle/GradleClient'
+import { GradleClient } from 'src/artefact-info/project/drivers/gradle/GradleClient'
 import Path from 'path'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 

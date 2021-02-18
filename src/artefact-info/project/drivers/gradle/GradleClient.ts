@@ -1,7 +1,6 @@
 import { findFileRecursivelyUpwards } from 'src/util/file-search/findFileRecursivelyUpwards'
-import { isGradleProject } from 'src/info/gradle/isGradleProject'
-import { listDirFiles } from 'src/util/fs/listDirFiles'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
+import { FileSystem } from 'src/fs/FileSystem'
 
 const findGradleBin = (dir: string) => {
     const bin = findFileRecursivelyUpwards(dir, 'gradlew')!!
@@ -17,11 +16,20 @@ export class GradleClient {
     private readonly sh: LocalShellCmdExecutor
 
     constructor(dir: string, sh: LocalShellCmdExecutor) {
-        if (!isGradleProject(listDirFiles(dir)))
+        const fs = new FileSystem()
+        if (!this.isGradleProject(fs.listDirFiles(dir)))
             throw new Error(`${dir} does not appear to be a Gradle project dir`)
         this.dir = dir
         this.bin = findGradleBin(dir)
         this.sh = sh
+    }
+
+    isGradleProject = (fileNames: string[]): boolean => {
+        for (const f of fileNames) {
+            if (f === 'build.gradle' || f === 'build.gradle.kts') return true
+        }
+
+        return false
     }
 
     getVersion = () => this.getProperty('version')

@@ -1,5 +1,5 @@
 import Path from 'path'
-import { createNpmClient } from 'src/info/npm/NpmClient'
+import { createNpmClient } from 'src/artefact-info/project/drivers/npm/NpmClient'
 
 describe('NpmClient', () => {
     const dir = Path.resolve(__dirname, 'proj1')

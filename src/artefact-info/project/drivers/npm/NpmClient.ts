@@ -22,7 +22,7 @@ const readPackageJson = (path: string): PackageJson => {
     return json as PackageJson
 }
 
-class NpmClient {
+export class NpmClient {
     private readonly packageJson: PackageJson
 
     constructor(dir: string) {
@@ -39,5 +39,3 @@ class NpmClient {
 
     getName = () => this.packageJson.name
 }
-
-export const createNpmClient = (dir: string) => new NpmClient(dir)

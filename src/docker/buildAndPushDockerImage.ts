@@ -1,7 +1,6 @@
 import { Context } from 'src/ctx/Context'
-import { GetProjectInfoCmd } from 'src/info/getProjectInfo'
+import { GetProjectInfoCmd } from 'src/artefact-info/getProjectInfo'
 import { DockerImageClient } from 'src/docker/DockerImageClient'
-import { getBuildInfo } from 'src/info/getBuildInfo'
 import { Config } from 'src/config/Config'
 import { normalizeDir } from 'src/cli/normalizeDir'
 
