@@ -10,9 +10,43 @@ import { BuildInfoProvider } from 'src/info/build/BuildInfoProvider'
 import { ConfProvider } from 'src'
 import { Git } from 'src/util/git/Git'
 import { Clock } from 'src/ctx/Clock'
+import { Container } from 'inversify'
+import { ProjectDriver } from './project/ProjectDriver'
 
 export type InfoContext = {
     artefactInfoProvider: ArtifactInfoProvider
+}
+
+export const addInfoContext = (
+    c: Container,
+    dir: string,
+    projectType: string | null
+): void => {
+    const self: any[] = [
+        NpmClient,
+        GradleClient,
+        BuildInfoProvider,
+        GradleProjectDriver,
+        NpmProjectDriver
+    ]
+
+    self.forEach(s => c.bind(s).toSelf())
+
+    c.bind(ProjectInfoProvider).toDynamicValue(ctx => {
+        const providers: ProjectDriver[] = [
+            ctx.container.get(GradleProjectDriver),
+            ctx.container.get(NpmProjectDriver)
+        ]
+        const fs = ctx.container.get(FileSystem)
+        return new ProjectInfoProvider(providers, dir, fs)
+    })
+    c.bind(ArtifactInfoProvider).toDynamicValue(ctx => {
+        return new ArtifactInfoProvider(
+            ctx.container.get(BuildInfoProvider),
+            ctx.container.get(ProjectInfoProvider),
+            projectType
+        )
+    })
 }
 
 export const createInfoContext = (

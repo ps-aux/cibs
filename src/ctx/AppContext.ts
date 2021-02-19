@@ -1,4 +1,5 @@
-import { createInfoContext, InfoContext } from 'src/info/InfoContext'
+import 'reflect-metadata'
+import { addInfoContext } from 'src/info/InfoContext'
 import { DockerImageBuilder } from 'src/docker/DockerImageBuilder'
 import { EnvConfProvider } from 'src/util/env/EnvConfProvider'
 import { FileSystem } from 'src/fs/FileSystem'
@@ -7,32 +8,28 @@ import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { Clock } from 'src/ctx/Clock'
 import { DockerClient } from 'src/docker/DockerClient'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
+import { Container } from 'inversify'
+import { ConfProvider_, Log_ } from './ids'
 
-export type AppContext = {
-    info: InfoContext
-    dockerImageBuilder: DockerImageBuilder
-}
+export const createAppContext = (
+    dir: string,
+    projectType: string | null
+): Container => {
+    const self: any[] = [FileSystem, LocalShellCmdExecutor, Git, Clock]
+    const c = new Container()
 
-export const createAppContext = (projectType: string | null): AppContext => {
     const env = new EnvConfProvider()
-    const dir = 'ss'
-
     const log = new ConsoleLogger()
-    const fs = new FileSystem()
-    const sh = new LocalShellCmdExecutor(log)
-    const git = new Git(sh)
-    const clock = new Clock()
 
-    const info = createInfoContext(dir, fs, sh, env, git, clock, projectType)
+    c.bind(Log_).toConstantValue(log)
+    c.bind(ConfProvider_).toConstantValue(env)
 
-    const docker = new DockerClient(sh, log)
-    return {
-        info,
-        dockerImageBuilder: new DockerImageBuilder(
-            info.artefactInfoProvider,
-            env,
-            docker,
-            log
-        )
-    }
+    self.forEach(s => c.bind(s).toSelf())
+
+    addInfoContext(c, dir, projectType)
+
+    c.bind(DockerClient).toSelf()
+    c.bind(DockerImageBuilder).toSelf()
+
+    return c
 }

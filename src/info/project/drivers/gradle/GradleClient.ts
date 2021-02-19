@@ -1,6 +1,7 @@
 import { findFileRecursivelyUpwards } from 'src/util/file-search/findFileRecursivelyUpwards'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { FileSystem } from 'src/fs/FileSystem'
+import { injectable } from 'inversify'
 
 const findGradleBin = (dir: string): string => {
     const bin = findFileRecursivelyUpwards(dir, 'gradlew')
@@ -10,6 +11,7 @@ const findGradleBin = (dir: string): string => {
     return bin
 }
 
+@injectable()
 export class GradleClient {
     constructor(private fs: FileSystem, private sh: LocalShellCmdExecutor) {
         this.sh = sh

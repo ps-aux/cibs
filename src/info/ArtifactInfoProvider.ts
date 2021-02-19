@@ -3,10 +3,12 @@ import { BuildInfoProvider } from 'src/info/build/BuildInfoProvider'
 import { ProjectInfo } from 'src/info/project/ProjectInfo'
 import { BuildInfo } from 'src/info/build/BuildInfo'
 import { ArtifactInfo } from 'src/info/ArtifactInfo'
+import { injectable } from 'inversify'
 
 const calculateVersion = (proj: ProjectInfo, build: BuildInfo): string =>
     proj.version + '-' + build.buildNumber
 
+@injectable()
 export class ArtifactInfoProvider {
     constructor(
         private buildInfoProvider: BuildInfoProvider,

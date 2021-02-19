@@ -1,7 +1,9 @@
 import Path from 'path'
 import { ensureValidDir } from 'src/util/fs/isValidDir'
 import fs from 'fs'
+import { injectable } from 'inversify'
 
+@injectable()
 export class FileSystem {
     listDirFiles = (dir: string): string[] => {
         if (!Path.isAbsolute(dir))

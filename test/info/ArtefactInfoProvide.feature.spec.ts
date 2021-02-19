@@ -1,14 +1,14 @@
+import 'reflect-metadata'
 import Path from 'path'
 import { ArtifactInfoProvider } from 'src/info/ArtifactInfoProvider'
-import { FileSystem } from 'src/fs/FileSystem'
-import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { ConfProvider } from 'src'
 import { BUILD_NO_ENV_VAR_NAME } from 'src/info/build/BuildInfoProvider'
 import td from 'testdouble'
 import { Clock } from 'src/ctx/Clock'
 import { Git } from 'src/util/git/Git'
 import { minimalLogger } from 'src/log/MinimalLogger'
-import { createInfoContext } from 'src/info/InfoContext'
+import { ConfProvider_, Log_ } from '../../src/ctx/ids'
+import { createAppContext } from '../../src/ctx/AppContext'
 
 const sut = (dir: string, type: string | null): ArtifactInfoProvider => {
     const env = td.object<ConfProvider>()
@@ -21,15 +21,14 @@ const sut = (dir: string, type: string | null): ArtifactInfoProvider => {
     td.when(git.commitMessage()).thenReturn('My commit')
     td.when(git.commitId()).thenReturn('abcd')
 
-    return createInfoContext(
-        dir,
-        new FileSystem(),
-        new LocalShellCmdExecutor(minimalLogger()),
-        env,
-        git,
-        clock,
-        type
-    ).artefactInfoProvider
+    const c = createAppContext(dir, type)
+
+    c.rebind(Log_).toConstantValue(minimalLogger())
+    c.rebind(Git).toConstantValue(git)
+    c.rebind(Clock).toConstantValue(clock)
+    c.rebind(ConfProvider_).toConstantValue(env)
+
+    return c.get(ArtifactInfoProvider)
 }
 
 const test = (

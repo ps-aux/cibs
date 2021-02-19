@@ -1,13 +1,16 @@
 import { BuildInfo } from 'src/info/build/BuildInfo'
-import { ConfProvider } from 'src'
+import { ConfProvider } from '../../types'
 import { Git } from 'src/util/git/Git'
 import { Clock } from 'src/ctx/Clock'
+import { inject, injectable } from 'inversify'
+import { ConfProvider_ } from '../../ctx/ids'
 
 export const BUILD_NO_ENV_VAR_NAME = 'BUILD_NO'
 
+@injectable()
 export class BuildInfoProvider {
     constructor(
-        private env: ConfProvider,
+        @inject(ConfProvider_) private env: ConfProvider,
         private git: Git,
         private clock: Clock
     ) {}

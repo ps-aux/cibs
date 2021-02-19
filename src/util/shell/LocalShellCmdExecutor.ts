@@ -1,21 +1,24 @@
 import { Log } from 'src/types'
 import { shellCmd } from 'src/util/shell/shellCmd'
+import { inject, injectable } from 'inversify'
+import { Log_ } from '../../ctx/ids'
 
 export type ExecShellOps = {
     cwd?: string
 }
 
+@injectable()
 export class LocalShellCmdExecutor {
-    constructor(private log: Log) {}
+    constructor(@inject(Log_) private log: Log) {}
 
-    exec = (cmd: string) => {
+    exec = (cmd: string): void => {
         this.log.debug(cmd)
         shellCmd(cmd, {
             returnStdout: false
         })
     }
 
-    execWithStdIn = (cmd: string, stdin: string) => {
+    execWithStdIn = (cmd: string, stdin: string): void => {
         this.log.debug(`"${stdin}" > ${cmd}`)
         shellCmd(cmd, {
             stdin,

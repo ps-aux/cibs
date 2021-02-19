@@ -1,5 +1,6 @@
 import { findFileInDir } from 'src/util/fs/findFileInDir'
 import { readFile } from 'src/util/fs/readFile'
+import { injectable } from 'inversify'
 
 type PackageJson = {
     name: string
@@ -22,6 +23,7 @@ const readPackageJson = (path: string): PackageJson => {
     return json as PackageJson
 }
 
+@injectable()
 export class NpmClient {
     private packageJson = (dir: string): PackageJson => {
         const packageJsonPath = findFileInDir(dir, 'package.json')

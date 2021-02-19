@@ -11,6 +11,13 @@ module.exports = {
         '@babel/typescript'
     ],
     plugins: [
+        'babel-plugin-transform-typescript-metadata',
+        [
+            '@babel/plugin-proposal-decorators',
+            {
+                legacy: true
+            }
+        ],
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-optional-chaining',
         [

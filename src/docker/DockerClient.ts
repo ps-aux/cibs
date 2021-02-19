@@ -1,12 +1,15 @@
-import { Log } from 'src'
+import { Log } from 'src/types'
 import { ensureContainsFile } from 'src/util/fs/containsFile'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import Path from 'path'
+import { inject, injectable } from 'inversify'
+import { Log_ } from '../ctx/ids'
 
+@injectable()
 export class DockerClient {
     constructor(
         private readonly shell: LocalShellCmdExecutor,
-        private readonly log: Log
+        @inject(Log_) private readonly log: Log
     ) {}
 
     loginToRegistry = (

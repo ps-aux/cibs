@@ -1,6 +1,8 @@
 import { ArtifactInfoProvider } from 'src/info/ArtifactInfoProvider'
-import { ConfProvider, Log } from 'src'
+import { ConfProvider, Log } from 'src/types'
 import { DockerClient } from 'src/docker/DockerClient'
+import { inject, injectable } from 'inversify'
+import { ConfProvider_, Log_ } from '../ctx/ids'
 
 type DockerProps = {
     registryName: string
@@ -18,12 +20,13 @@ export const DOCKER_ENV_VARS = {
 
 const BUILD_INFO_VAR = 'BUILD_INFO'
 
+@injectable()
 export class DockerImageBuilder {
     constructor(
         private artifactInfoProvider: ArtifactInfoProvider,
-        private env: ConfProvider,
+        @inject(ConfProvider_) private env: ConfProvider,
         private docker: DockerClient,
-        private log: Log
+        @inject(Log_) private log: Log
     ) {}
 
     private getProps = (): DockerProps => {
@@ -35,7 +38,7 @@ export class DockerImageBuilder {
         }
     }
 
-    buildAndPublish = (dir: string, addBuildInfo?: boolean) => {
+    buildAndPublish = (dir: string, addBuildInfo?: boolean): void => {
         this.log.debug('Building Docker image from dir', dir)
         const info = this.artifactInfoProvider.provide()
         const props = this.getProps()

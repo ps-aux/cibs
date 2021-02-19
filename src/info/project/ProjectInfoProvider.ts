@@ -1,7 +1,9 @@
 import { ProjectInfo } from 'src/info/project/ProjectInfo'
 import { ProjectDriver } from 'src/info/project/ProjectDriver'
 import { FileSystem } from 'src/fs/FileSystem'
+import { injectable } from 'inversify'
 
+@injectable()
 export class ProjectInfoProvider {
     private driverMap: Record<string, ProjectDriver> = {}
 
