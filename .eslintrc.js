@@ -27,6 +27,7 @@ module.exports = {
         '@typescript-eslint/indent': 'off',
         '@typescript-eslint/ban-ts-ignore': 'off',
         '@typescript-eslint/explicit-member-accessibility': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
         'no-useless-constructor': 'off' // Bcs of Typescript
     },
     overrides: [

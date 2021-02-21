@@ -1,7 +1,9 @@
 import { findFileInDir } from 'src/util/fs/findFileInDir'
 import Path from 'path'
-import { isValidDir } from 'src/util/fs/isValidDir'
+import { FileSystem } from '../../fs/FileSystem'
 
+// TODO refactor
+const fs = new FileSystem()
 // TODO add max dirs ?
 export const findFileRecursivelyUpwards = (
     dir: string,
@@ -14,7 +16,7 @@ export const findFileRecursivelyUpwards = (
 
     const parent = Path.resolve(dir, '..')
 
-    if (!isValidDir(parent)) return null
+    if (!fs.isValidDir(parent)) return null
 
     return findFileRecursivelyUpwards(parent, name, attempts - 1)
 }

@@ -8,6 +8,8 @@
             "src": ["."]
         },
         "experimentalDecorators": true,
+        // Bcs of ts-node and inversify
+        "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         // Process & infer types from .js files.
         //    "allowJs": true,

@@ -1,4 +1,4 @@
-import { Log } from 'src'
+import { Log } from './types'
 
 export class ConsoleLogger implements Log {
     private enabled = true

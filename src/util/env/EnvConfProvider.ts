@@ -1,4 +1,4 @@
-import { ConfProvider } from 'src'
+import { ConfProvider } from 'src/types'
 
 export class EnvConfProvider implements ConfProvider {
     optionalProperty = (name: string): string | null =>

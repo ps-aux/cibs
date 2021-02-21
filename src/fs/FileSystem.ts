@@ -1,5 +1,4 @@
 import Path from 'path'
-import { ensureValidDir } from 'src/util/fs/isValidDir'
 import fs from 'fs'
 import { injectable } from 'inversify'
 
@@ -9,17 +8,17 @@ export class FileSystem {
         if (!Path.isAbsolute(dir))
             throw new Error(`Dir path must be absolute but is '${dir}'`)
 
-        ensureValidDir(dir)
+        this.ensureValidDir(dir)
 
         const files = fs.readdirSync(dir)
 
         return files.filter(f => fs.lstatSync(Path.resolve(dir, f)).isFile())
     }
 
-    isValidDir = (path: string) =>
+    isValidDir = (path: string): boolean =>
         fs.existsSync(path) && fs.lstatSync(path).isDirectory()
 
-    ensureValidDir = (path: string) => {
+    ensureValidDir = (path: string): void => {
         if (!this.isValidDir(path))
             throw new Error(`'${path} is not a directory`)
     }

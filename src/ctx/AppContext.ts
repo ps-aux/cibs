@@ -7,19 +7,26 @@ import { Git } from 'src/util/git/Git'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { Clock } from 'src/ctx/Clock'
 import { DockerClient } from 'src/docker/DockerClient'
-import { ConsoleLogger } from 'src/log/ConsoleLogger'
 import { Container } from 'inversify'
 import { ConfProvider_, Log_ } from './ids'
+import { ArtifactInfoProvider } from '../info/ArtifactInfoProvider'
+import { minimalLogger } from '../log/MinimalLogger'
+
+export type AppContext = {
+    info: ArtifactInfoProvider
+    docker: DockerImageBuilder
+}
 
 export const createAppContext = (
     dir: string,
     projectType: string | null
-): Container => {
+): [AppContext, Container] => {
     const self: any[] = [FileSystem, LocalShellCmdExecutor, Git, Clock]
     const c = new Container()
 
     const env = new EnvConfProvider()
-    const log = new ConsoleLogger()
+    // const log = new ConsoleLogger()
+    const log = minimalLogger()
 
     c.bind(Log_).toConstantValue(log)
     c.bind(ConfProvider_).toConstantValue(env)
@@ -31,5 +38,11 @@ export const createAppContext = (
     c.bind(DockerClient).toSelf()
     c.bind(DockerImageBuilder).toSelf()
 
-    return c
+    return [
+        {
+            info: c.get(ArtifactInfoProvider),
+            docker: c.get(DockerImageBuilder)
+        },
+        c
+    ]
 }
