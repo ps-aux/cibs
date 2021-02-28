@@ -6,7 +6,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf build && babel --extensions '.ts,.js,.d.ts' src -d lib src",
-    "rn": "NODE_PATH=. ts-node src/bin/bin.ts",
+    "rn": "BUILD_NO=123 NODE_PATH=. ts-node src/bin/bin.ts",
     "pub": "npm publish --access public",
     "test": "jest",
     "typecheck": "tsc --noEmit",

@@ -1,7 +1,7 @@
-import { ProjectInfoProvider } from 'src/info/project/ProjectInfoProvider'
-import { BuildInfoProvider } from 'src/info/build/BuildInfoProvider'
-import { ProjectInfo } from 'src/info/project/ProjectInfo'
-import { BuildInfo } from 'src/info/build/BuildInfo'
+import { ProjectInfoProvider } from './project/ProjectInfoProvider'
+import { BuildInfoProvider } from './build/BuildInfoProvider'
+import { ProjectInfo } from './project/ProjectInfo'
+import { BuildInfo } from './build/BuildInfo'
 import { ArtifactInfo } from 'src/info/ArtifactInfo'
 import { injectable } from 'inversify'
 

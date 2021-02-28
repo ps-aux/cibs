@@ -1,4 +1,4 @@
-import { ConfProvider, Log } from 'src'
+import { ConfProvider, Log } from 'src/types'
 import { createEnvConfProvider } from 'src/util/env/EnvConfProvider'
 import { Git } from 'src/util/git/Git'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'

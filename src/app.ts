@@ -1,19 +1,15 @@
-import { AppContext, createAppContext } from './ctx/AppContext'
+import { createAppContext, Handlers } from './ctx/AppContext'
 import { CliApp, cmd, cmdGroup } from '@ps-aux/nclif'
 import Path from 'path'
+import { BuildAndPushOptions } from './docker/DockerCmdHandler'
 
 type GlobalOptions = {
     dir: string | null
     projectType: string | null
 }
 
-type DockerOptions = {
-    dockerDir: string | null
-    buildInfoBuildArg: boolean | null
-}
-
-export const createApp = (): CliApp<AppContext, GlobalOptions> =>
-    CliApp.of<AppContext, GlobalOptions>({
+export const createApp = (): CliApp<Handlers, GlobalOptions> =>
+    CliApp.of<Handlers, GlobalOptions>({
         options: [
             {
                 name: 'dir',
@@ -34,18 +30,8 @@ export const createApp = (): CliApp<AppContext, GlobalOptions> =>
                         description: 'Build info key'
                     }
                 ],
-                run: ({ key }: { key?: string }, ctx, { stdout }) => {
-                    const info = ctx.info.provide()
-                    let res: string
-                    if (key) {
-                        if (!Object.keys(info).includes(key))
-                            throw new Error(`Unknown key '${key}'`)
-                        // @ts-ignore
-                        res = info[key].toString()
-                    } else {
-                        res = JSON.stringify(info)
-                    }
-                    stdout(res)
+                run: ({ key }: { key?: string }, { info }, { stdout }) => {
+                    stdout(key ? info.single(key) : info.all())
                 }
             }),
             docker: cmdGroup({
@@ -60,8 +46,8 @@ export const createApp = (): CliApp<AppContext, GlobalOptions> =>
                 ],
                 commands: {
                     'build-and-push': cmd({
-                        run: (o: DockerOptions) => {
-                            console.log('build nad pushing', o)
+                        run: (o: BuildAndPushOptions, { docker }) => {
+                            docker.buildAndPush(o)
                         }
                     })
                 }

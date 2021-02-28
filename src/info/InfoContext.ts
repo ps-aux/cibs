@@ -1,17 +1,18 @@
-import { ArtifactInfoProvider } from 'src/info/ArtifactInfoProvider'
-import { ProjectInfoProvider } from 'src/info/project/ProjectInfoProvider'
-import { FileSystem } from 'src/fs/FileSystem'
-import { GradleProjectDriver } from 'src/info/project/drivers/gradle/GradleProjectDriver'
+import { ArtifactInfoProvider } from './ArtifactInfoProvider'
+import { ProjectInfoProvider } from './project/ProjectInfoProvider'
+import { FileSystem } from '../fs/FileSystem'
+import { GradleProjectDriver } from './project/drivers/gradle/GradleProjectDriver'
 import { NpmProjectDriver } from 'src/info/project/drivers/npm/NpmProjectDriver'
-import { NpmClient } from 'src/info/project/drivers/npm/NpmClient'
+import { NpmClient } from './project/drivers/npm/NpmClient'
 import { GradleClient } from 'src/info/project/drivers/gradle/GradleClient'
-import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
-import { BuildInfoProvider } from 'src/info/build/BuildInfoProvider'
-import { ConfProvider } from 'src/types'
-import { Git } from 'src/util/git/Git'
+import { LocalShellCmdExecutor } from '../util/shell/LocalShellCmdExecutor'
+import { BuildInfoProvider } from './build/BuildInfoProvider'
+import { ConfProvider } from '../types'
+import { Git } from '../util/git/Git'
 import { Clock } from 'src/ctx/Clock'
 import { Container } from 'inversify'
 import { ProjectDriver } from './project/ProjectDriver'
+import { InfoCmdHandler } from './InfoCmdHandler'
 
 export type InfoContext = {
     artefactInfoProvider: ArtifactInfoProvider
@@ -27,7 +28,8 @@ export const addInfoContext = (
         GradleClient,
         BuildInfoProvider,
         GradleProjectDriver,
-        NpmProjectDriver
+        NpmProjectDriver,
+        InfoCmdHandler
     ]
 
     self.forEach(s => c.bind(s).toSelf())
