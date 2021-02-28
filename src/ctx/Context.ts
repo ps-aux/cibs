@@ -1,10 +1,10 @@
 import { ConfProvider, Log } from 'src/types'
-import { createEnvConfProvider } from 'src/util/env/EnvConfProvider'
 import { Git } from 'src/util/git/Git'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { Config } from 'src/config/Config'
 import { readConfig } from 'src/config/readConfig'
+import { EnvConfProvider } from '../util/env/EnvConfProvider'
 
 export type Context = {
     log: () => Log
@@ -37,7 +37,7 @@ class ContextImpl implements Context {
 
     config = () => this._config
 
-    env = () => createEnvConfProvider()
+    env = () => new EnvConfProvider(process.env)
 
     git = () => new Git(this.sh)
 

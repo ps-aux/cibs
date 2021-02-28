@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "@ps-aux/nclif": "^0.0.2-alpha-3",
+    "@ps-aux/nclif": "^0.0.2-alpha.4",
     "@types/hapi__joi": "^17.1.6",
     "axios": "^0.21.1",
     "handlebars": "^4.7.7",
