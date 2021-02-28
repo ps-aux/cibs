@@ -7,5 +7,6 @@ module.exports = {
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', 'd.ts'],
     testPathIgnorePatterns: ['node_modules', 'lib'],
-    moduleDirectories: ['node_modules', '.']
+    moduleDirectories: ['node_modules', '.'],
+    setupFilesAfterEnv: ['./jest.setup.ts']
 }

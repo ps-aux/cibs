@@ -22,7 +22,8 @@
         //        "isolatedModules": true,
         // Import non-ES modules as default imports.
         "esModuleInterop": true,
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "skipLibCheck": true
     },
     "include": ["."],
     "exclude": ["node_modules", "e2e/**/*"]

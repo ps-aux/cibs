@@ -10,23 +10,33 @@ import { DockerClient } from '../docker/DockerClient'
 import { Container } from 'inversify'
 import { ConfProvider_, Log_ } from './ids'
 import { minimalLogger } from '../log/MinimalLogger'
-import { InfoCmdHandler } from '../info/InfoCmdHandler'
 import { DockerCmdHandler } from '../docker/DockerCmdHandler'
 import { Config_ } from './Config'
+import Path from 'path'
+import { Process } from '@ps-aux/nclif'
 
-export type Handlers = {
-    info: InfoCmdHandler
-    docker: DockerCmdHandler
+export type GlobalOptions = {
+    dir: string | null
+    projectType: string | null
 }
 
 export const createAppContext = (
-    dir: string,
-    projectType: string | null
-): [Handlers, Container] => {
+    opts: GlobalOptions,
+    proc: Process
+): Container => {
+    let dir = proc.cwd
+    if (opts.dir) {
+        if (!Path.isAbsolute(opts.dir)) dir = Path.resolve(proc.cwd, opts.dir)
+        else {
+            dir = opts.dir
+        }
+    }
+    const projectType = opts.projectType
+
     const self: any[] = [FileSystem, LocalShellCmdExecutor, Git, Clock]
     const c = new Container()
 
-    const env = new EnvConfProvider()
+    const env = new EnvConfProvider(proc.env)
     // const log = new ConsoleLogger()
     const log = minimalLogger()
 
@@ -45,11 +55,5 @@ export const createAppContext = (
     c.bind(DockerImageBuilder).toSelf()
     c.bind(DockerCmdHandler).toSelf()
 
-    return [
-        {
-            info: c.get(InfoCmdHandler),
-            docker: c.get(DockerCmdHandler)
-        },
-        c
-    ]
+    return c
 }

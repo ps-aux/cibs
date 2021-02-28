@@ -1,7 +1,5 @@
 import 'reflect-metadata'
-import Path from 'path'
 import { ArtifactInfoProvider } from 'src/info/ArtifactInfoProvider'
-import { ConfProvider } from 'src'
 import { BUILD_NO_ENV_VAR_NAME } from 'src/info/build/BuildInfoProvider'
 import td from 'testdouble'
 import { Clock } from 'src/ctx/Clock'
@@ -9,8 +7,11 @@ import { Git } from 'src/util/git/Git'
 import { minimalLogger } from 'src/log/MinimalLogger'
 import { ConfProvider_, Log_ } from '../../src/ctx/ids'
 import { createAppContext } from '../../src/ctx/AppContext'
+import { ConfProvider } from '../../src/types'
+import { dataDirPath } from '../_data/dataDirPath'
+import { Process } from '@ps-aux/nclif'
 
-const sut = (dir: string, type: string | null): ArtifactInfoProvider => {
+const sut = (dir: string, projectType: string | null): ArtifactInfoProvider => {
     const env = td.object<ConfProvider>()
     td.when(env.property(BUILD_NO_ENV_VAR_NAME)).thenReturn('build-no')
 
@@ -21,7 +22,15 @@ const sut = (dir: string, type: string | null): ArtifactInfoProvider => {
     td.when(git.commitMessage()).thenReturn('My commit')
     td.when(git.commitId()).thenReturn('abcd')
 
-    const c = createAppContext(dir, type)
+    const c = createAppContext(
+        {
+            dir,
+            projectType
+        },
+        {
+            cwd: 'ee'
+        } as Process
+    )
 
     c.rebind(Log_).toConstantValue(minimalLogger())
     c.rebind(Git).toConstantValue(git)
@@ -39,10 +48,7 @@ const test = (
     type?: string
 ) =>
     it(name, () => {
-        const res = sut(
-            Path.resolve(__dirname, 'project', ...path),
-            type || null
-        ).provide()
+        const res = sut(dataDirPath('project', ...path), type || null).provide()
 
         expect(res).toEqual({
             name: expectedName,
@@ -60,7 +66,7 @@ describe('ProjectDriver', () => {
 
     it('mixed project without explicit type throw error', () => {
         expect(() => {
-            sut(Path.resolve(__dirname, 'project', 'mixed'), null).provide()
+            sut(dataDirPath('project', 'mixed'), null).provide()
         }).toThrowError(/Multiple project types detected in dir/)
     })
     test('Gradle in mixed', ['mixed'], 'gradle-proj-2', '1.2.3', 'gradle')

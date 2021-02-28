@@ -1,15 +1,14 @@
-import { createAppContext, Handlers } from './ctx/AppContext'
+import { createAppContext, GlobalOptions } from './ctx/AppContext'
 import { CliApp, cmd, cmdGroup } from '@ps-aux/nclif'
-import Path from 'path'
-import { BuildAndPushOptions } from './docker/DockerCmdHandler'
+import {
+    BuildAndPushOptions,
+    DockerCmdHandler
+} from './docker/DockerCmdHandler'
+import { Container } from 'inversify'
+import { InfoCmdHandler } from './info/InfoCmdHandler'
 
-type GlobalOptions = {
-    dir: string | null
-    projectType: string | null
-}
-
-export const createApp = (): CliApp<Handlers, GlobalOptions> =>
-    CliApp.of<Handlers, GlobalOptions>({
+export const createApp = (): CliApp<Container, GlobalOptions> =>
+    CliApp.of<Container, GlobalOptions>({
         options: [
             {
                 name: 'dir',
@@ -30,7 +29,8 @@ export const createApp = (): CliApp<Handlers, GlobalOptions> =>
                         description: 'Build info key'
                     }
                 ],
-                run: ({ key }: { key?: string }, { info }, { stdout }) => {
+                run: ({ key }: { key?: string }, ctx, { stdout }) => {
+                    const info = ctx.get(InfoCmdHandler)
                     stdout(key ? info.single(key) : info.all())
                 }
             }),
@@ -46,22 +46,13 @@ export const createApp = (): CliApp<Handlers, GlobalOptions> =>
                 ],
                 commands: {
                     'build-and-push': cmd({
-                        run: (o: BuildAndPushOptions, { docker }) => {
-                            docker.buildAndPush(o)
+                        run: (o: BuildAndPushOptions, c) => {
+                            c.get(DockerCmdHandler).buildAndPush(o)
                         }
                     })
                 }
             })
         }
-    }).context((o: GlobalOptions) => {
-        let dir = process.cwd()
-
-        if (o.dir) {
-            if (!Path.isAbsolute(o.dir))
-                dir = Path.resolve(process.cwd(), o.dir)
-            else {
-                dir = o.dir
-            }
-        }
-        return createAppContext(dir, o.projectType)[0]
+    }).context((o: GlobalOptions, proc) => {
+        return createAppContext(o, proc)
     })
