@@ -1,38 +1,9 @@
-import { createApp } from '../../src/app'
-import { CliApp, Process } from '@ps-aux/nclif'
-import { createAppContext, GlobalOptions } from '../../src/ctx/AppContext'
-import { Container } from 'inversify'
-import { dataDirPath } from '../_data/dataDirPath'
-import { DockerClient } from '../../src/docker/DockerClient'
+import { DockerClient } from './DockerClient'
 import td from 'testdouble'
-import { LocalShellCmdExecutor } from '../../src/util/shell/LocalShellCmdExecutor'
-import { ArtifactInfoProvider } from '../../src/info/ArtifactInfoProvider'
-import { BuildInfo } from '../../src/info/build/BuildInfo'
-import { ArtifactInfo } from '../../src/info/ArtifactInfo'
+import { ArtifactInfoProvider } from '../info/ArtifactInfoProvider'
+import { ArtifactInfo } from '../info/ArtifactInfo'
+import { createTestApp } from '../../test/app/createTestApp'
 
-const testApp = (
-    env?: Record<string, string>,
-    setup?: (c: Container) => void
-): CliApp<Container, GlobalOptions> => {
-    const p: Process = {
-        stdout: console.log,
-        stderr: console.error,
-        exit: s => {
-            if (s !== 0) throw new Error(`Exited with code ${s}`)
-        },
-        env: env || {},
-        cwd: __dirname,
-        args: []
-    }
-    return createApp()
-        .process(p)
-        .context(opts => {
-            const c = createAppContext(opts, p)
-
-            if (setup) setup(c)
-            return c
-        })
-}
 it('build and push', async () => {
     // Given
     const env = {
@@ -62,7 +33,7 @@ it('build and push', async () => {
     const dir = __dirname
 
     // When
-    await testApp(env, c => {
+    await createTestApp(env, c => {
         c.rebind(DockerClient).toConstantValue(dockerClient)
         c.rebind(ArtifactInfoProvider).toConstantValue(infoProvider)
     }).run(['docker', 'build-and-push', `--dir=${dir}`, '--buildInfoBuildArg'])

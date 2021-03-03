@@ -5,18 +5,10 @@ import { GradleProjectDriver } from './project/drivers/gradle/GradleProjectDrive
 import { NpmProjectDriver } from 'src/info/project/drivers/npm/NpmProjectDriver'
 import { NpmClient } from './project/drivers/npm/NpmClient'
 import { GradleClient } from 'src/info/project/drivers/gradle/GradleClient'
-import { LocalShellCmdExecutor } from '../util/shell/LocalShellCmdExecutor'
 import { BuildInfoProvider } from './build/BuildInfoProvider'
-import { ConfProvider } from '../types'
-import { Git } from '../util/git/Git'
-import { Clock } from 'src/ctx/Clock'
 import { Container } from 'inversify'
 import { ProjectDriver } from './project/ProjectDriver'
 import { InfoCmdHandler } from './InfoCmdHandler'
-
-export type InfoContext = {
-    artefactInfoProvider: ArtifactInfoProvider
-}
 
 export const addInfoContext = (
     c: Container,
@@ -49,33 +41,4 @@ export const addInfoContext = (
             projectType
         )
     })
-}
-
-export const createInfoContext = (
-    dir: string,
-    fs: FileSystem,
-    sh: LocalShellCmdExecutor,
-    env: ConfProvider,
-    git: Git,
-    clock: Clock,
-    type: string | null
-): InfoContext => {
-    const npm = new NpmClient()
-    const gradle = new GradleClient(fs, sh)
-
-    const projectInfoProvider = new ProjectInfoProvider(
-        [new GradleProjectDriver(gradle), new NpmProjectDriver(npm)],
-        dir,
-        fs
-    )
-
-    const buildInfoProvider = new BuildInfoProvider(env, git, clock)
-
-    return {
-        artefactInfoProvider: new ArtifactInfoProvider(
-            buildInfoProvider,
-            projectInfoProvider,
-            type
-        )
-    }
 }

@@ -6,6 +6,7 @@ import {
 } from './docker/DockerCmdHandler'
 import { Container } from 'inversify'
 import { InfoCmdHandler } from './info/InfoCmdHandler'
+import { Waiter } from './wait/Waiter'
 
 export const createApp = (): CliApp<Container, GlobalOptions> =>
     CliApp.of<Container, GlobalOptions>({
@@ -49,6 +50,48 @@ export const createApp = (): CliApp<Container, GlobalOptions> =>
                         run: (o: BuildAndPushOptions, c) => {
                             c.get(DockerCmdHandler).buildAndPush(o)
                         }
+                    })
+                }
+            }),
+            wait: cmdGroup({
+                options: [
+                    {
+                        name: 'timeout',
+                        description: 'Timeout in seconds',
+                        type: 'number'
+                    }
+                ],
+                commands: {
+                    http: cmd({
+                        description: 'Wait for an HTTP endpoint to be live',
+                        positionals: [
+                            {
+                                name: 'url',
+                                description: 'URL of an HTTP endpoint',
+                                required: true
+                            }
+                        ],
+                        run: (
+                            { url, timeout }: { url: string; timeout: number },
+                            c
+                        ) => c.get(Waiter).waitForHttp(url, timeout)
+                    }),
+                    tcp: cmd({
+                        description: 'Wait for a TCP endpoint to be live',
+                        positionals: [
+                            {
+                                name: 'socket',
+                                description: 'Socket address of a TCP endpoint',
+                                required: true
+                            }
+                        ],
+                        run: (
+                            {
+                                socket,
+                                timeout
+                            }: { socket: string; timeout: number },
+                            c
+                        ) => c.get(Waiter).waitForTcp(socket, timeout)
                     })
                 }
             })

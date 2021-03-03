@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-import { addInfoContext } from '../info/InfoContext'
 import { DockerImageBuilder } from '../docker/DockerImageBuilder'
 import { EnvConfProvider } from '../util/env/EnvConfProvider'
 import { FileSystem } from '../fs/FileSystem'
@@ -14,6 +13,9 @@ import { DockerCmdHandler } from '../docker/DockerCmdHandler'
 import { Config_ } from './Config'
 import Path from 'path'
 import { Process } from '@ps-aux/nclif'
+import { addInfoContext } from '../info/context'
+import { addDockerContext } from '../docker/context'
+import { Waiter } from '../wait/Waiter'
 
 export type GlobalOptions = {
     dir: string | null
@@ -49,11 +51,9 @@ export const createAppContext = (
     self.forEach(s => c.bind(s).toSelf())
 
     addInfoContext(c, dir, projectType)
+    addDockerContext(c)
 
-    // Docker
-    c.bind(DockerClient).toSelf()
-    c.bind(DockerImageBuilder).toSelf()
-    c.bind(DockerCmdHandler).toSelf()
+    c.bind(Waiter).toSelf()
 
     return c
 }

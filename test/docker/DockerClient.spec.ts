@@ -1,21 +1,18 @@
 import { DockerClient } from 'src/docker/DockerClient'
 import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
-import { minimalLogger } from 'src/log/MinimalLogger'
 
 const registryApiUrl = 'https://index.docker.io/v1/'
 const registryName = 'yijohor934'
 const username = 'yijohor934'
 const pass = 'yijohor934@mailezee.com'
 
-// Better not run all the day
-describe.skip('DockerImageClient', () => {
+// Will be run manually for now
+describe.skip('DockerClient', () => {
     const imageName = 'cibs-test-image'
 
-    const sut = new DockerClient(
-        new LocalShellCmdExecutor(minimalLogger()),
-        new ConsoleLogger()
-    )
+    const l = new ConsoleLogger()
+    const sut = new DockerClient(new LocalShellCmdExecutor(l), l)
 
     it('works', () => {
         const name = registryName + '/' + imageName
