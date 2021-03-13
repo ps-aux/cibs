@@ -36,7 +36,13 @@ it('build and push', async () => {
     await createTestApp(env, c => {
         c.rebind(DockerClient).toConstantValue(dockerClient)
         c.rebind(ArtifactInfoProvider).toConstantValue(infoProvider)
-    }).run(['docker', 'build-and-push', `--dir=${dir}`, '--buildInfoBuildArg'])
+    }).run([
+        'docker',
+        'build-and-push',
+        '--dir=any',
+        `--docker-dir=${dir}`,
+        '--build-info-build-arg'
+    ])
 
     // Then
     td.verify(

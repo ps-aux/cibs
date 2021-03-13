@@ -1,6 +1,6 @@
 {
   "name": "@ps-aux/cibs",
-  "version": "0.6.0",
+  "version": "0.6.0-alpha.1",
   "description": "",
   "module": "lib/index.js",
   "main": "lib/index.js",
@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "@ps-aux/nclif": "^0.0.2-alpha.4",
+    "@ps-aux/nclif": "^0.0.2-alpha.6",
     "@types/hapi__joi": "^17.1.6",
     "axios": "^0.21.1",
     "handlebars": "^4.7.7",

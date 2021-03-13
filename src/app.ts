@@ -16,7 +16,7 @@ export const createApp = (): CliApp<Container, GlobalOptions> =>
                 description: 'Directory where to run instead of pwd.'
             },
             {
-                name: 'projectType',
+                name: 'project-type',
                 description:
                     'Project type. Use if dir contains multiple project types (e.g. Npm and Gradle).'
             }
@@ -38,10 +38,10 @@ export const createApp = (): CliApp<Container, GlobalOptions> =>
             docker: cmdGroup({
                 options: [
                     {
-                        name: 'dockerDir'
+                        name: 'docker-dir'
                     },
                     {
-                        name: 'buildInfoBuildArg',
+                        name: 'build-info-build-arg',
                         type: 'boolean'
                     }
                 ],
