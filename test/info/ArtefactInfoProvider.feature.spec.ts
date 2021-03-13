@@ -16,7 +16,7 @@ const sut = (dir: string, projectType: string | null): ArtifactInfoProvider => {
     td.when(env.property(BUILD_NO_ENV_VAR_NAME)).thenReturn('build-no')
 
     const clock = td.object<Clock>()
-    td.when(clock.now()).thenReturn(new Date('2020-01-01 12:00'))
+    td.when(clock.now()).thenReturn(new Date('2020-01-01T12:00:00.000Z'))
 
     const git = td.object<Git>()
     td.when(git.commitMessage()).thenReturn('My commit')
@@ -55,7 +55,7 @@ const test = (
             version: expectedVersion + '-build-no',
             commit: 'abcd',
             commitMessage: 'My commit',
-            buildTime: '2020-01-01T11:00:00.000Z',
+            buildTime: '2020-01-01T12:00:00.000Z',
             buildNumber: 'build-no'
         })
     })
