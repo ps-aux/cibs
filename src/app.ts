@@ -19,7 +19,8 @@ export const createApp = (cwd: string): CliApp<Container, GlobalOptions> =>
             {
                 name: 'project-type',
                 description:
-                    'Project type. Use if dir contains multiple project types (e.g. Npm and Gradle).'
+                    'Project type. Use if dir contains multiple project types (e.g. Npm and Gradle).',
+                fromConfig: true
             }
         ],
         commands: {
