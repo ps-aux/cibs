@@ -2,4 +2,4 @@
 
 import { createApp } from '../app'
 
-createApp().run().catch(console.error)
+createApp(process.cwd()).run().catch(console.error)

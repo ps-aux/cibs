@@ -7,8 +7,9 @@ import {
 import { Container } from 'inversify'
 import { InfoCmdHandler } from './info/InfoCmdHandler'
 import { Waiter } from './wait/Waiter'
+import { readConfig } from './config/readConfig'
 
-export const createApp = (): CliApp<Container, GlobalOptions> =>
+export const createApp = (cwd: string): CliApp<Container, GlobalOptions> =>
     CliApp.of<Container, GlobalOptions>({
         options: [
             {
@@ -38,7 +39,8 @@ export const createApp = (): CliApp<Container, GlobalOptions> =>
             docker: cmdGroup({
                 options: [
                     {
-                        name: 'docker-dir'
+                        name: 'docker-dir',
+                        fromConfig: 'dockerDir'
                     },
                     {
                         name: 'build-info-build-arg',
@@ -96,6 +98,8 @@ export const createApp = (): CliApp<Container, GlobalOptions> =>
                 }
             })
         }
-    }).context((o: GlobalOptions, proc) => {
-        return createAppContext(o, proc)
     })
+        .addObjectConfig(readConfig(cwd))
+        .context((o: GlobalOptions, proc) => {
+            return createAppContext(o, proc)
+        })
