@@ -3,4 +3,4 @@ import { createApp } from '../src/app'
 
 process.env.NODE_PATH = '.'
 
-createApp().run().catch(console.error)
+createApp(process.cwd()).run().catch(console.error)
