@@ -1,4 +1,4 @@
-import { ProjectInfo } from "./ProjectInfo"
+import { ProjectInfo } from './ProjectInfo'
 
 export type ProjectDriver = {
     getType: () => string

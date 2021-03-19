@@ -1,4 +1,4 @@
-import { findFileInDir } from "../fs/findFileInDir"
+import { findFileInDir } from '../fs/findFileInDir'
 import Path from 'path'
 import { FileSystem } from '../../fs/FileSystem'
 
