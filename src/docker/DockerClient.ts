@@ -1,7 +1,6 @@
 import { Log } from '../log/types'
 import { ensureContainsFile } from '../util/fs/containsFile'
 import { LocalShellCmdExecutor } from '../util/shell/LocalShellCmdExecutor'
-import Path from 'path'
 import { inject, injectable } from 'inversify'
 import { Log_ } from '../ctx/ids'
 import { FileSystem } from '../fs/FileSystem'
