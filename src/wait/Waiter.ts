@@ -28,7 +28,7 @@ export class Waiter {
         timeout = this.defaultTimeout
     ): Promise<void> => {
         this.log.debug(`Waiting (TCP) for ${hostPort} for ${timeout} seconds`)
-        waitOn({
+        await waitOn({
             resources: [`tcp:${hostPort}`],
             timeout: timeout * 1000
         })
