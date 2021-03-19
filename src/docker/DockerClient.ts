@@ -4,11 +4,13 @@ import { LocalShellCmdExecutor } from '../util/shell/LocalShellCmdExecutor'
 import Path from 'path'
 import { inject, injectable } from 'inversify'
 import { Log_ } from '../ctx/ids'
+import { FileSystem } from '../fs/FileSystem'
 
 @injectable()
 export class DockerClient {
     constructor(
         private readonly shell: LocalShellCmdExecutor,
+        private readonly fs: FileSystem,
         @inject(Log_) private readonly log: Log
     ) {}
 
@@ -34,7 +36,8 @@ export class DockerClient {
         version: string,
         buildArgs: { [key: string]: string } = {}
     ): void => {
-        if (!Path.isAbsolute(dir)) throw new Error(`Dir ${dir} is not absolute`)
+        if (!this.fs.isAbsoluteDirPath(dir))
+            throw new Error(`Dir ${dir} is not absolute`)
 
         ensureContainsFile(dir, 'Dockerfile')
 

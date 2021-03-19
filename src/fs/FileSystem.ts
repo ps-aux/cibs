@@ -4,6 +4,10 @@ import { injectable } from 'inversify'
 
 @injectable()
 export class FileSystem {
+    isAbsoluteDirPath = (dir: string): boolean => {
+        return Path.isAbsolute(dir)
+    }
+
     listDirFiles = (dir: string): string[] => {
         if (!Path.isAbsolute(dir))
             throw new Error(`Dir path must be absolute but is '${dir}'`)
