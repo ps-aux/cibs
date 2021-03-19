@@ -27,7 +27,11 @@ module.exports = {
         '@typescript-eslint/indent': 'off',
         '@typescript-eslint/ban-ts-ignore': 'off',
         '@typescript-eslint/explicit-member-accessibility': 'off',
-        'no-useless-constructor': 'off' // Bcs of Typescript
+        '@typescript-eslint/ban-ts-comment': 'off',
+        // Bcs of TS constructors
+        'no-useless-constructor': 'off',
+        // Bcs of TS constructors
+        '@typescript-eslint/no-empty-function': 'off'
     },
     overrides: [
         {

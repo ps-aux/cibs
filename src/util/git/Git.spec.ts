@@ -1,8 +1,9 @@
-import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
-import { Git } from 'src/util/git/Git'
+import { LocalShellCmdExecutor } from '../shell/LocalShellCmdExecutor'
+import { Git } from './Git'
+import { minimalLogger } from '../../log/MinimalLogger'
 
 it('Git naive test', () => {
-    const git = new Git(new LocalShellCmdExecutor())
+    const git = new Git(new LocalShellCmdExecutor(minimalLogger()))
 
     const r = {
         branch: git.branch(),

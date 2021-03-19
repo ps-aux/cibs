@@ -1,5 +1,7 @@
-import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
+import { LocalShellCmdExecutor } from '../shell/LocalShellCmdExecutor'
+import { injectable } from 'inversify'
 
+@injectable()
 export class Git {
     constructor(private readonly sh: LocalShellCmdExecutor) {}
 

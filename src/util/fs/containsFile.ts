@@ -1,4 +1,4 @@
-import { listDirFiles } from 'src/util/fs/listDirFiles'
+import { listDirFiles } from './listDirFiles'
 
 export const containsFile = (dir: string, regex: RegExp) => {
     const files = listDirFiles(dir)

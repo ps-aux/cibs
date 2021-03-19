@@ -1,11 +1,12 @@
 import fs from 'fs'
 import Path from 'path'
-import { ensureValidDir } from 'src/util/fs/isValidDir'
+import { FileSystem } from '../../fs/FileSystem'
 
+const myFs = new FileSystem()
 export const listDirFiles = (dir: string): string[] => {
     if (!Path.isAbsolute(dir)) throw new Error('Dir path must be absolute')
 
-    ensureValidDir(dir)
+    myFs.ensureValidDir(dir)
 
     const files = fs.readdirSync(dir)
 
