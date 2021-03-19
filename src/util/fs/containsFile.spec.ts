@@ -1,4 +1,4 @@
-import { containsFile } from 'src/util/fs/containsFile'
+import { containsFile } from './containsFile'
 
 describe('containsFile', () => {
     it('existing', () => {

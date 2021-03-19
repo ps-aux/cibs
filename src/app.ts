@@ -75,9 +75,13 @@ export const createApp = (cwd: string): CliApp<Container, GlobalOptions> =>
                             }
                         ],
                         run: (
-                            { url, timeout }: { url: string; timeout: number },
+                            {
+                                url,
+                                timeout
+                            }: { url: string; timeout: number | null },
                             c
-                        ) => c.get(Waiter).waitForHttp(url, timeout)
+                        ) =>
+                            c.get(Waiter).waitForHttp(url, timeout || undefined)
                     }),
                     tcp: cmd({
                         description: 'Wait for a TCP endpoint to be live',
@@ -92,9 +96,12 @@ export const createApp = (cwd: string): CliApp<Container, GlobalOptions> =>
                             {
                                 socket,
                                 timeout
-                            }: { socket: string; timeout: number },
+                            }: { socket: string; timeout: number | null },
                             c
-                        ) => c.get(Waiter).waitForTcp(socket, timeout)
+                        ) =>
+                            c
+                                .get(Waiter)
+                                .waitForTcp(socket, timeout || undefined)
                     })
                 }
             })

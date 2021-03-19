@@ -1,4 +1,4 @@
-import { BuildInfo } from 'src/info/build/BuildInfo'
+import { BuildInfo } from "./build/BuildInfo"
 
 export type ArtifactInfo = BuildInfo & {
     name: string

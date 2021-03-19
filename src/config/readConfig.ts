@@ -1,16 +1,17 @@
-import { findFileRecursivelyUpwards } from 'src/util/file-search/findFileRecursivelyUpwards'
-import { Config } from 'src/config/Config'
-import { validateConfig } from 'src/config/validateConfig'
+import { findFileRecursivelyUpwards } from '../util/file-search/findFileRecursivelyUpwards'
+import { validateConfig } from './validateConfig'
 
 const configName = 'cibs.config.js'
 
-export const readConfig = (rootDir: string): Config | null => {
+export const readConfig = (rootDir: string): any => {
     const path = findFileRecursivelyUpwards(rootDir, configName, 5)
 
-    if (!path) return null
+    if (!path) return {}
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const cfg = require(path)
 
-    return validateConfig(cfg)
+    validateConfig(cfg)
+
+    return cfg
 }

@@ -1,5 +1,5 @@
-import { findFileInDir } from 'src/util/fs/findFileInDir'
-import { readFile } from 'src/util/fs/readFile'
+import { findFileInDir } from '../../../../util/fs/findFileInDir'
+import { readFile } from '../../../../util/fs/readFile'
 import { injectable } from 'inversify'
 
 type PackageJson = {

@@ -1,5 +1,5 @@
 import Path from 'path'
-import { listDirFiles } from 'src/util/fs/listDirFiles'
+import { listDirFiles } from "./listDirFiles"
 import { FileSystem } from '../../fs/FileSystem'
 
 // TODO

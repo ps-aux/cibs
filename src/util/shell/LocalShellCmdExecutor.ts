@@ -1,5 +1,5 @@
 import { Log } from 'src/types'
-import { shellCmd } from 'src/util/shell/shellCmd'
+import { shellCmd } from './shellCmd'
 import { inject, injectable } from 'inversify'
 import { Log_ } from '../../ctx/ids'
 

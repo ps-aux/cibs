@@ -1,4 +1,4 @@
-import { findFileInDir } from 'src/util/fs/findFileInDir'
+import { findFileInDir } from './findFileInDir'
 
 const dir = __dirname
 

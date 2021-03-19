@@ -1,7 +1,7 @@
-import { BuildInfo } from 'src/info/build/BuildInfo'
+import { BuildInfo } from './BuildInfo'
 import { ConfProvider } from '../../types'
-import { Git } from 'src/util/git/Git'
-import { Clock } from 'src/ctx/Clock'
+import { Git } from '../../util/git/Git'
+import { Clock } from '../../ctx/Clock'
 import { inject, injectable } from 'inversify'
 import { ConfProvider_ } from '../../ctx/ids'
 

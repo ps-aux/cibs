@@ -1,6 +1,6 @@
-import { ArtifactInfoProvider } from 'src/info/ArtifactInfoProvider'
-import { ConfProvider, Log } from 'src/types'
-import { DockerClient } from 'src/docker/DockerClient'
+import { ArtifactInfoProvider } from '../info/ArtifactInfoProvider'
+import { ConfProvider, Log } from '../types'
+import { DockerClient } from './DockerClient'
 import { inject, injectable } from 'inversify'
 import { ConfProvider_, Log_ } from '../ctx/ids'
 

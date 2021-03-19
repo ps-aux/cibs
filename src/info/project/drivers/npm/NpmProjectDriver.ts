@@ -1,6 +1,6 @@
-import { ProjectDriver } from 'src/info/project/ProjectDriver'
-import { ProjectInfo } from 'src/info/project/ProjectInfo'
-import { NpmClient } from 'src/info/project/drivers/npm/NpmClient'
+import { ProjectDriver } from '../../ProjectDriver'
+import { ProjectInfo } from '../../ProjectInfo'
+import { NpmClient } from './NpmClient'
 import { injectable } from 'inversify'
 
 export const NPM_PROJECT_TYPE = 'npm'

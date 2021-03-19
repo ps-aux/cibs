@@ -1,6 +1,6 @@
-import { ProjectInfo } from 'src/info/project/ProjectInfo'
-import { ProjectDriver } from 'src/info/project/ProjectDriver'
-import { FileSystem } from 'src/fs/FileSystem'
+import { ProjectInfo } from './ProjectInfo'
+import { ProjectDriver } from './ProjectDriver'
+import { FileSystem } from '../../fs/FileSystem'
 import { injectable } from 'inversify'
 
 @injectable()

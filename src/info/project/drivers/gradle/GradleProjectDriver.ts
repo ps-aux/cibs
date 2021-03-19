@@ -1,6 +1,6 @@
-import { ProjectDriver } from 'src/info/project/ProjectDriver'
-import { GradleClient } from 'src/info/project/drivers/gradle/GradleClient'
-import { ProjectInfo } from 'src/info/project/ProjectInfo'
+import { ProjectDriver } from '../../ProjectDriver'
+import { GradleClient } from './GradleClient'
+import { ProjectInfo } from '../../ProjectInfo'
 import { injectable } from 'inversify'
 
 export const GRADLE_PROJECT_TYPE = 'gradle'

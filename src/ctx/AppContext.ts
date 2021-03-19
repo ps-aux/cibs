@@ -13,6 +13,7 @@ import { Process } from '@ps-aux/nclif'
 import { addInfoContext } from '../info/context'
 import { addDockerContext } from '../docker/context'
 import { Waiter } from '../wait/Waiter'
+import { ConsoleLogger } from '../log/ConsoleLogger'
 
 export type GlobalOptions = {
     dir: string | null
@@ -36,8 +37,7 @@ export const createAppContext = (
     const c = new Container()
 
     const env = new EnvConfProvider(proc.env)
-    // const log = new ConsoleLogger()
-    const log = minimalLogger()
+    const log = new ConsoleLogger()
 
     c.bind(Log_).toConstantValue(log)
     c.bind(ConfProvider_).toConstantValue(env)

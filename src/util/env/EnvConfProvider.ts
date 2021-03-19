@@ -1,4 +1,4 @@
-import { ConfProvider } from 'src/types'
+import { ConfProvider } from '../../types'
 
 export class EnvConfProvider implements ConfProvider {
     constructor(private env: Record<string, string | undefined>) {}

@@ -1,6 +1,6 @@
-import { findFileRecursivelyUpwards } from 'src/util/file-search/findFileRecursivelyUpwards'
-import { LocalShellCmdExecutor } from 'src/util/shell/LocalShellCmdExecutor'
-import { FileSystem } from 'src/fs/FileSystem'
+import { findFileRecursivelyUpwards } from '../../../../util/file-search/findFileRecursivelyUpwards'
+import { LocalShellCmdExecutor } from '../../../../util/shell/LocalShellCmdExecutor'
+import { FileSystem } from '../../../../fs/FileSystem'
 import { injectable } from 'inversify'
 
 const findGradleBin = (dir: string): string => {

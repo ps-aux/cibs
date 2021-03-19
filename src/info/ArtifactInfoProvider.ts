@@ -2,7 +2,7 @@ import { ProjectInfoProvider } from './project/ProjectInfoProvider'
 import { BuildInfoProvider } from './build/BuildInfoProvider'
 import { ProjectInfo } from './project/ProjectInfo'
 import { BuildInfo } from './build/BuildInfo'
-import { ArtifactInfo } from 'src/info/ArtifactInfo'
+import { ArtifactInfo } from "./ArtifactInfo"
 import { injectable } from 'inversify'
 
 const calculateVersion = (proj: ProjectInfo, build: BuildInfo): string =>

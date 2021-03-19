@@ -1,5 +1,4 @@
-import { allProjectTypes } from 'src/info/ProjectType'
-import { Config } from 'src/config/Config'
+import { allProjectTypes } from '../info/ProjectType'
 import Joi from '@hapi/joi'
 
 const Schema = () =>
@@ -8,12 +7,10 @@ const Schema = () =>
         dockerDir: Joi.string().optional()
     })
 
-export const validateConfig = (cfg: any): Config => {
+export const validateConfig = (cfg: any): void => {
     const r = Schema().validate(cfg, {
         presence: 'required',
         allowUnknown: false
     })
     if (r.error) throw new Error('Invalid config.' + r.error.message)
-
-    return cfg as Config
 }
