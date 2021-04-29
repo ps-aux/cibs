@@ -9,7 +9,7 @@ import { InfoCmdHandler } from './info/InfoCmdHandler'
 import { Waiter } from './wait/Waiter'
 import { readConfig } from './config/readConfig'
 
-export const createApp = (cwd: string): CliApp<Container, GlobalOptions> =>
+export const createApp = (): CliApp<Container, GlobalOptions> =>
     CliApp.of<Container, GlobalOptions>({
         options: [
             {
@@ -107,7 +107,7 @@ export const createApp = (cwd: string): CliApp<Container, GlobalOptions> =>
             })
         }
     })
-        .addObjectConfig(readConfig(cwd))
+        .addObjectConfig(readConfig)
         .context((o: GlobalOptions, proc) => {
             return createAppContext(o, proc)
         })

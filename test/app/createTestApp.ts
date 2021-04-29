@@ -17,7 +17,7 @@ export const createTestApp = (
         cwd: __dirname,
         args: []
     }
-    return createApp(__dirname)
+    return createApp()
         .process(p)
         .context(opts => {
             const c = createAppContext(opts, p)
