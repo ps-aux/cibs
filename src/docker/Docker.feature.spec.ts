@@ -1,8 +1,12 @@
+// noinspection JSVoidFunctionReturnValueUsed
+
 import { DockerClient } from './DockerClient'
 import td from 'testdouble'
 import { ArtifactInfoProvider } from '../info/ArtifactInfoProvider'
 import { ArtifactInfo } from '../info/ArtifactInfo'
 import { createTestApp } from '../../test/app/createTestApp'
+import { DockerImageBuilder } from './DockerImageBuilder'
+import Path from 'path'
 
 it('build and push', async () => {
     // Given
@@ -58,4 +62,21 @@ it('build and push', async () => {
         })
     )
     td.verify(dockerClient.push('my-image-name'))
+})
+
+// Created for a bug
+it('Relative Docker dir in CLI args expanded to the absolute path', async () => {
+    const imageBuilder = td.object<DockerImageBuilder>()
+
+    const dir = 'foo'
+    await createTestApp({}, c => {
+        c.rebind(DockerImageBuilder).toConstantValue(imageBuilder)
+    }).run(['docker', 'build-and-push', `--docker-dir=${dir}`])
+
+    td.verify(
+        imageBuilder.buildAndPublish(
+            Path.resolve(process.cwd(), 'foo'),
+            td.matchers.anything()
+        )
+    )
 })
