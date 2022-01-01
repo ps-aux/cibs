@@ -1,6 +1,6 @@
 {
   "name": "@ps-aux/cibs",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "",
   "module": "lib/index.js",
   "main": "lib/index.js",

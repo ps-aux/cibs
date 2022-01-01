@@ -19,6 +19,7 @@ export const DOCKER_ENV_VARS = {
 }
 
 const BUILD_INFO_VAR = 'BUILD_INFO'
+const DOCKER_IMAGE_NAME_VAR = 'CIBS_DOCKER_IMAGE_NAME'
 
 @injectable()
 export class DockerImageBuilder {
@@ -43,7 +44,9 @@ export class DockerImageBuilder {
         const info = this.artifactInfoProvider.provide()
         const props = this.getProps()
 
-        const imageName = this.docker.composeName(props.registryName, info.name)
+        const name =
+            this.env.optionalProperty(DOCKER_IMAGE_NAME_VAR) || info.name
+        const imageName = this.docker.composeName(props.registryName, name)
 
         this.docker.loginToRegistry(
             props.apiUrl,

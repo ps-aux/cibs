@@ -8,26 +8,29 @@ import { createTestApp } from '../../test/app/createTestApp'
 import { DockerImageBuilder } from './DockerImageBuilder'
 import Path from 'path'
 
+const info: ArtifactInfo = {
+    name: 'my-artifact',
+    commit: 'sha-123',
+    version: 'my-version',
+    commitMessage: 'cmd-mesg',
+    buildTime: 'now',
+    buildNumber: '123'
+}
+
+// TODO replace with mocking the provider for cases when we don't want to test that env vars are propagated
+const env = {
+    BUILD_NO: '123',
+    DOCKER_REGISTRY_NAME: 'mock@DOCKER_REGISTRY_NAME',
+    DOCKER_REGISTRY_API_URL: 'mock@DOCKER_REGISTRY_API_URL',
+    DOCKER_REGISTRY_LOGIN_USERNAME: 'mock@DOCKER_REGISTRY_LOGIN_USERNAME',
+    DOCKER_REGISTRY_LOGIN_PASSWORD: 'mock@DOCKER_REGISTRY_LOGIN_PASSWORD'
+}
+
+const infoProvider = td.object<ArtifactInfoProvider>()
+td.when(infoProvider.provide()).thenReturn(info)
+
 it('build and push', async () => {
     // Given
-    const env = {
-        BUILD_NO: '123',
-        DOCKER_REGISTRY_NAME: 'mock@DOCKER_REGISTRY_NAME',
-        DOCKER_REGISTRY_API_URL: 'mock@DOCKER_REGISTRY_API_URL',
-        DOCKER_REGISTRY_LOGIN_USERNAME: 'mock@DOCKER_REGISTRY_LOGIN_USERNAME',
-        DOCKER_REGISTRY_LOGIN_PASSWORD: 'mock@DOCKER_REGISTRY_LOGIN_PASSWORD'
-    }
-
-    const info: ArtifactInfo = {
-        name: 'my-artifact',
-        commit: 'sha-123',
-        version: 'my-version',
-        commitMessage: 'cmd-mesg',
-        buildTime: 'now',
-        buildNumber: '123'
-    }
-    const infoProvider = td.object<ArtifactInfoProvider>()
-    td.when(infoProvider.provide()).thenReturn(info)
 
     const dockerClient = td.object<DockerClient>()
     td.when(
@@ -79,4 +82,22 @@ it('Relative Docker dir in CLI args expanded to the absolute path', async () => 
             td.matchers.anything()
         )
     )
+})
+
+// Created for a bug
+it('Docker image name can be provided from CIBS_DOCKER_IMAGE_NAME env var', async () => {
+    const dockerClient = td.object<DockerClient>()
+    await createTestApp(
+        // TODO achieve by mocking ConfProvider
+        {
+            ...env,
+            CIBS_DOCKER_IMAGE_NAME: 'my-name'
+        },
+        c => {
+            c.rebind(DockerClient).toConstantValue(dockerClient)
+            c.rebind(ArtifactInfoProvider).toConstantValue(infoProvider)
+        }
+    ).run(['docker', 'build-and-push'])
+
+    td.verify(dockerClient.composeName(td.matchers.anything(), 'my-name'))
 })
