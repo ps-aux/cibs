@@ -50,7 +50,7 @@ export class DockerClient {
     }
 
     push = (name: string): void => {
-        this.cmd(`push ${name}`)
+        this.cmd(`push ${name} --all-tags`)
     }
 
     private cmd = (args: string) => {
