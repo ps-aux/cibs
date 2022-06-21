@@ -51,6 +51,7 @@ jobs:
             branch=$(git rev-parse --abbrev-ref HEAD)
             if [[ ${branch} != 'master' ]];then
               echo "Not a master branch. Won't publish."
+              exit 0
             fi
             git config user.email "ps-aux@ci.com"
             git config user.name "ps-aux-ci"
