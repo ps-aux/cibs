@@ -3,8 +3,9 @@ jobs:
   build:
     environment:
     docker:
-      - image: circleci/openjdk:16.15.1-jdk-buster-node-browsers
+      - image: circleci/openjdk:13.0.2-jdk-buster-node-browsers
     steps:
+      - run: node --version
       - checkout
       - setup_remote_docker
       - restore_cache:
